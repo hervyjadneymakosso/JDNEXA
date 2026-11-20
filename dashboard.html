@@ -28,7 +28,11 @@
 <button class="btn btn-primary" type="submit">+ Créer mon site</button><p data-message class="error" aria-live="polite"></p></form>
 <aside class="site-live-preview" aria-label="Aperçu en direct de votre site">
   <div class="site-live-preview-heading"><div><span class="eyebrow">APERÇU EN DIRECT</span><h3>Votre site</h3></div><span class="preview-live-dot">En direct</span></div>
-  <div class="preview-browser"><div class="preview-browser-bar"><i></i><i></i><i></i><span>votre-site.jdnexa</span></div>
+  <div class="preview-editor-toolbar" aria-label="Ajouter du contenu">
+    <button type="button" data-preview-add="title">+ Titre</button><button type="button" data-preview-add="text">+ Texte</button><button type="button" data-preview-add="button">+ Bouton</button><button type="button" data-preview-add="image">+ Image</button><button type="button" data-preview-add="list">+ Liste</button><button type="button" data-preview-add="divider">+ Séparateur</button>
+  </div>
+  <div class="preview-edit-actions"><span data-preview-selection>Sélectionnez un élément pour le modifier</span><button type="button" data-preview-up title="Monter">↑</button><button type="button" data-preview-down title="Descendre">↓</button><button type="button" data-preview-delete>Supprimer</button></div>
+  <div class="preview-browser"><div class="preview-browser-bar"><i></i><i></i><i></i><span data-preview-address>votre-site.jdnexa</span></div>
     <div class="preview-screen" data-live-preview>
       <div class="preview-site-nav"><b data-preview-brand>Mon projet</b><span>Accueil　 Services　 Contact</span></div>
       <div class="preview-site-hero"><small data-preview-category>VOTRE PROJET</small><h2 data-preview-title>Mon nouveau site</h2><p data-preview-description>Présentez votre activité et vos idées au monde entier.</p><span class="preview-site-button">Découvrir</span></div>
@@ -36,7 +40,7 @@
       <div class="preview-site-footer" data-preview-footer>© Mon projet</div>
     </div>
   </div>
-  <p class="preview-caption">L'aperçu évolue automatiquement selon le nom, la catégorie et les couleurs que vous choisissez. Le rendu final pourra être enrichi dans le Studio.</p>
+  <p class="preview-caption">Cliquez directement sur les textes pour les modifier. Ajoutez, déplacez ou supprimez des blocs. Les modifications seront enregistrées lors de la création du site. Le Studio permettra ensuite de gérer toutes les pages et les médias.</p>
 </aside>
 </section>
 <section class="sites-section"><div class="section-heading compact"><div><h2>Mes sites et projets</h2><p class="muted">Gérez séparément les pages, articles, produits, fichiers et paramètres de chaque site.</p></div><span class="badge" data-site-usage>0 site</span></div><p data-dashboard-message class="error" aria-live="polite"></p><div data-sites class="site-grid"><div class="empty">Chargement de vos sites…</div></div></section>
