@@ -22,7 +22,7 @@
  "gouvernemental-administration":"agency","ong-association-caritative":"nonprofit","entreprise-corporate":"agency","intranet-extranet":"saas","religieux-spirituel":"nonprofit","sportif-club-federation":"events",
  "developpement-code-api":"saas","test-bac-a-sable-staging":"saas","site-miroir-archive":"magazine"
  };
- const typeMap={fashion:"boutique",restaurant:"livraison",property:"immobilier",travel:"voyage",agency:"vitrine",magazine:"blog",portfolio:"portfolio",community:"communaute",dating:"rencontre",media:"streaming",gaming:"jeux",saas:"saas",education:"education",finance:"finance",health:"sante",events:"evenementiel",nonprofit:"association"};
+ const typeMap={fashion:"boutique",restaurant:"livraison",property:"immobilier",travel:"voyage",agency:"vitrine",magazine:"blog",portfolio:"portfolio",community:"association",dating:"rencontre",media:"streaming",gaming:"jeux",saas:"saas",education:"education",finance:"finance",health:"sante",events:"evenementiel",nonprofit:"association"};
  const visuals={
  fashion:["https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1400&q=85","#171717","moderne"],
  restaurant:["https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=85","#9a542f","elegant"],
