@@ -6,25 +6,52 @@
  };
  const icons={boutique:"▣",marketplace:"▦",rencontre:"♡",reseau_social:"◎",blog:"▤",streaming:"▶",jeux:"♟",vitrine:"▧",portfolio:"✦",emploi:"▣",education:"⌘",forum:"☷",annonces:"▤",voyage:"✈",immobilier:"⌂",finance:"◇",sante:"✚",administration:"▥",comparateur:"⇄",wiki:"W",recherche:"⌕",messagerie:"✉",saas:"⌘",crowdfunding:"♡",association:"♧",livraison:"↗",cloud:"☁",evenementiel:"▣",landing:"↗"};
  const slugify=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,70);
- function updateLivePreview(){
-  if(!form)return;
-  const name=form.nom.value.trim()||"Mon nouveau site";
-  const category=form.type_site.selectedOptions[0]?.textContent||"Votre projet";
-  const primary=form.primary_color.value||"#1458d4";
-  const background=form.background_color.value||"#f6f8fc";
-  const style=form.design_style.value||"moderne";
-  const screen=$("[data-live-preview]");
-  if(!screen)return;
-  $("[data-preview-brand]").textContent=name;
-  $("[data-preview-title]").textContent=name;
-  $("[data-preview-description]").textContent="Présentez votre activité et vos idées au monde entier.";
-  $("[data-preview-category]").textContent=category;
-  $("[data-preview-footer]").textContent="© "+name+" — Tous droits réservés";
-  screen.style.setProperty("--preview-primary",primary);
-  screen.style.setProperty("--preview-background",background);
-  screen.dataset.design=style;
-  const btn=screen.querySelector(".preview-site-button");
-  if(btn)btn.style.background=primary;
+ let draftBlocks=[
+  {id:"draft-title",type:"title",level:1,text:"Mon nouveau site"},
+  {id:"draft-text",type:"text",text:"Présentez votre activité et vos idées au monde entier."},
+  {id:"draft-button",type:"button",text:"Découvrir",url:"#"}
+ ];
+ let selectedDraft=null;
+ function renderDraft(){
+  const screen=$("[data-live-preview]");if(!screen)return;
+  screen.replaceChildren();
+  const nav=document.createElement("div");nav.className="preview-site-nav";
+  const brand=document.createElement("b");brand.dataset.previewBrand="";brand.textContent=form.nom.value.trim()||"Mon projet";
+  const links=document.createElement("span");links.textContent="Accueil　 Services　 Contact";nav.append(brand,links);screen.append(nav);
+  const hero=document.createElement("div");hero.className="preview-site-hero";
+  const cat=document.createElement("small");cat.dataset.previewCategory="";cat.textContent=form.type_site.selectedOptions[0]?.textContent||"VOTRE PROJET";hero.append(cat);
+  const title=document.createElement("h2");title.textContent=form.nom.value.trim()||"Mon nouveau site";hero.append(title);
+  const desc=document.createElement("p");desc.textContent=" ";hero.append(desc);
+  screen.append(hero);
+  draftBlocks.forEach((b,i)=>{
+   const wrap=document.createElement("div");wrap.className="preview-draft-block"+(selectedDraft===b.id?" selected":"");wrap.dataset.draftId=b.id;
+   let node;
+   if(b.type==="title"){node=document.createElement(b.level===1?"h2":"h3");node.textContent=b.text;node.contentEditable="true";}
+   else if(b.type==="text"){node=document.createElement("p");node.textContent=b.text;node.contentEditable="true";}
+   else if(b.type==="button"){node=document.createElement("a");node.className="preview-site-button";node.textContent=b.text;node.href="javascript:void(0)";node.contentEditable="true";}
+   else if(b.type==="image"){node=document.createElement("div");if(b.url){const im=document.createElement("img");im.src=b.url;im.alt="Image du site";node.append(im);}else node.textContent="Image à ajouter";}
+   else if(b.type==="list"){node=document.createElement("ul");(b.items||[]).forEach(x=>{const li=document.createElement("li");li.textContent=x;node.append(li);});}
+   else {node=document.createElement("hr");}
+   node.addEventListener("input",()=>{if(["title","text","button"].includes(b.type)){b.text=node.textContent;selectedDraft=b.id;}});
+   wrap.append(node);wrap.addEventListener("click",e=>{if(e.target.isContentEditable)return;selectedDraft=b.id;renderDraft();});
+   screen.append(wrap);
+  });
+  const cards=document.createElement("div");cards.className="preview-site-cards";for(let i=0;i<3;i++){const c=document.createElement("div");const b=document.createElement("b"),a=document.createElement("i"),d=document.createElement("i");c.append(b,a,d);cards.append(c);}screen.append(cards);
+  const foot=document.createElement("div");foot.className="preview-site-footer";foot.textContent="© "+(form.nom.value.trim()||"Mon projet")+" — Tous droits réservés";screen.append(foot);
+  const primary=form.primary_color.value||"#1458d4",background=form.background_color.value||"#f6f8fc";
+  screen.style.setProperty("--preview-primary",primary);screen.style.setProperty("--preview-background",background);screen.dataset.design=form.design_style.value||"moderne";
+  const address=$("[data-preview-address]");if(address)address.textContent=(slugify(form.slug.value)||"votre-site")+".jdnexa";
+  const label=$("[data-preview-selection]");if(label){const b=draftBlocks.find(x=>x.id===selectedDraft);label.textContent=b?"Élément sélectionné : "+b.type:"Sélectionnez un élément pour le modifier";}
+  const up=$("[data-preview-up]"),down=$("[data-preview-down]"),del=$("[data-preview-delete]");const idx=draftBlocks.findIndex(x=>x.id===selectedDraft);
+  if(up)up.disabled=idx<=0;if(down)down.disabled=idx<0||idx>=draftBlocks.length-1;if(del)del.disabled=idx<0;
+ }
+ function updateLivePreview(){renderDraft();}
+ function addDraftBlock(type){
+  const id="draft-"+Date.now()+"-"+Math.random().toString(36).slice(2,7);
+  const defaults={title:{type,text:"Nouveau titre",level:2},text:{type,text:"Écrivez votre texte ici."},button:{type,text:"En savoir plus",url:"#"},image:{type,url:""},list:{type,items:["Premier élément","Deuxième élément"]},divider:{type}};
+  const b=defaults[type];if(!b)return;
+  if(type==="image"){const url=prompt("Collez l'adresse HTTPS de votre image :");if(!url)return;try{const u=new URL(url);if(!["https:","http:"].includes(u.protocol))throw Error();b.url=u.href;}catch{alert("Adresse d'image invalide.");return;}}
+  b.id=id;draftBlocks.push(b);selectedDraft=id;renderDraft();
  }
  const say=(el,t,ok=false)=>{el.textContent=t;el.className=ok?"success":"error";};
  function siteCard(site){
@@ -75,6 +102,10 @@
  ["nom","type_site","design_style","primary_color","background_color"].forEach(name=>form.elements[name]?.addEventListener("input",updateLivePreview));
  ["type_site","design_style"].forEach(name=>form.elements[name]?.addEventListener("change",updateLivePreview));
  updateLivePreview();
+ document.querySelectorAll("[data-preview-add]").forEach(btn=>btn.addEventListener("click",()=>addDraftBlock(btn.dataset.previewAdd)));
+ $("[data-preview-up]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>0){[draftBlocks[i-1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i-1]];renderDraft();}});
+ $("[data-preview-down]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>=0&&i<draftBlocks.length-1){[draftBlocks[i+1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i+1]];renderDraft();}});
+ $("[data-preview-delete]").addEventListener("click",()=>{draftBlocks=draftBlocks.filter(x=>x.id!==selectedDraft);selectedDraft=null;renderDraft();});
  form.addEventListener("submit",async e=>{
   e.preventDefault();const btn=form.querySelector('[type="submit"]');btn.disabled=true;const status=form.querySelector("[data-message]");
   try{
@@ -83,12 +114,10 @@
    const settings={site_type:type,display_name:nom,description:"Bienvenue sur "+nom,template:type,design_style:form.design_style.value,font_family:form.font_family.value,primary_color:form.primary_color.value,background_color:form.background_color.value,intro_animation:form.intro_animation.checked};
    const {data,error}=await sb.from("sites").insert({owner_id:user.id,nom,slug,type_site:type,settings_json:settings}).select("id").single();
    if(error)throw error;
-   const starter={boutique:"Découvrez nos produits et nos nouveautés.",marketplace:"Achetez et vendez au même endroit.",rencontre:"Faites de nouvelles rencontres dans un espace convivial.",reseau_social:"Connectez-vous et partagez avec votre communauté.",blog:"Bienvenue sur notre publication.",streaming:"Découvrez nos vidéos, musiques et podcasts.",jeux:"Bienvenue dans notre espace de jeux.",education:"Apprenez à votre rythme grâce à nos contenus.",emploi:"Découvrez les opportunités et les talents.",forum:"Rejoignez la discussion et partagez vos idées.",landing:"Une présentation claire pour votre projet."};
-   const intro=starter[type]||"Présentez votre activité, vos services et vos contenus.";
-   const blocks=[{id:crypto.randomUUID(),type:"title",level:1,text:nom},{id:crypto.randomUUID(),type:"text",text:intro},{id:crypto.randomUUID(),type:"button",text:"Nous contacter",url:"https://wa.me/242000000000"}];
+   const blocks=draftBlocks.map(b=>({...b,id:crypto.randomUUID(),items:b.items?[...b.items]:undefined}));
    const {error:pageError}=await sb.from("pages").insert({site_id:data.id,titre:"Accueil",slug:"accueil",content_json:{blocks}});
    if(pageError)throw pageError;
-   form.reset();say(status,"Votre site a été créé. Ouvrez le Studio pour ajouter des pages et personnaliser son contenu.",true);await load();
+   form.reset();draftBlocks=[{id:"draft-title",type:"title",level:1,text:nom},{id:"draft-text",type:"text",text:"Présentez votre activité et vos idées au monde entier."},{id:"draft-button",type:"button",text:"Découvrir",url:"#"}];selectedDraft=null;updateLivePreview();say(status,"Votre site a été créé avec les éléments de votre aperçu. Ouvrez le Studio pour continuer.",true);await load();
   }catch(err){say(status,err.message||"La création du site a échoué.");}
   finally{btn.disabled=false;}
  });
