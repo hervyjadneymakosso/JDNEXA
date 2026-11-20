@@ -6,6 +6,26 @@
  };
  const icons={boutique:"▣",marketplace:"▦",rencontre:"♡",reseau_social:"◎",blog:"▤",streaming:"▶",jeux:"♟",vitrine:"▧",portfolio:"✦",emploi:"▣",education:"⌘",forum:"☷",annonces:"▤",voyage:"✈",immobilier:"⌂",finance:"◇",sante:"✚",administration:"▥",comparateur:"⇄",wiki:"W",recherche:"⌕",messagerie:"✉",saas:"⌘",crowdfunding:"♡",association:"♧",livraison:"↗",cloud:"☁",evenementiel:"▣",landing:"↗"};
  const slugify=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,70);
+ function updateLivePreview(){
+  if(!form)return;
+  const name=form.nom.value.trim()||"Mon nouveau site";
+  const category=form.type_site.selectedOptions[0]?.textContent||"Votre projet";
+  const primary=form.primary_color.value||"#1458d4";
+  const background=form.background_color.value||"#f6f8fc";
+  const style=form.design_style.value||"moderne";
+  const screen=$("[data-live-preview]");
+  if(!screen)return;
+  $("[data-preview-brand]").textContent=name;
+  $("[data-preview-title]").textContent=name;
+  $("[data-preview-description]").textContent="Présentez votre activité et vos idées au monde entier.";
+  $("[data-preview-category]").textContent=category;
+  $("[data-preview-footer]").textContent="© "+name+" — Tous droits réservés";
+  screen.style.setProperty("--preview-primary",primary);
+  screen.style.setProperty("--preview-background",background);
+  screen.dataset.design=style;
+  const btn=screen.querySelector(".preview-site-button");
+  if(btn)btn.style.background=primary;
+ }
  const say=(el,t,ok=false)=>{el.textContent=t;el.className=ok?"success":"error";};
  function siteCard(site){
   const card=document.createElement("article");card.className="site-card";
@@ -52,6 +72,9 @@
   if(!sub.error&&sub.data){plan=sub.data.formule;siteLimit=plan==="BUSINESS"?5:1;$("[data-plan-name]").textContent=plan;$("[data-plan-limit]").textContent=sub.data.statut==="active"?"Jusqu'à "+siteLimit+" site"+(siteLimit>1?"s":""):"Abonnement à renouveler";}
   await load();
  }catch(e){say(msg,e.message||"Impossible de charger votre espace.");}
+ ["nom","type_site","design_style","primary_color","background_color"].forEach(name=>form.elements[name]?.addEventListener("input",updateLivePreview));
+ ["type_site","design_style"].forEach(name=>form.elements[name]?.addEventListener("change",updateLivePreview));
+ updateLivePreview();
  form.addEventListener("submit",async e=>{
   e.preventDefault();const btn=form.querySelector('[type="submit"]');btn.disabled=true;const status=form.querySelector("[data-message]");
   try{
