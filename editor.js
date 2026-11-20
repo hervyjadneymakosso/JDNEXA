@@ -1,5 +1,5 @@
 (() => {
- const $=s=>document.querySelector(s),canvas=$("[data-canvas"),props=$("[data-properties"),status=$("[data-editor-status");
+ const $=s=>document.querySelector(s),canvas=$("[data-canvas]"),props=$("[data-properties]"),status=$("[data-editor-status]");
  if(!canvas)return;
  const params=new URLSearchParams(location.search);let sb,user,siteId=params.get("site"),site=null,pages=[],pageId=null,blocks=[],selectedId=null,dirty=false,settings={};
  const titleInput=$("#page-title-input"),slugInput=$("#page-slug-input"),saveBtn=$("[data-save-page"),pageSelect=$("[data-page-select"),siteSelect=$("[data-site-select");
@@ -67,7 +67,18 @@
  siteSelect.addEventListener("change",async()=>{if(dirty&&!confirm("Abandonner les modifications non enregistrées ?")){siteSelect.value=siteId;return;}await loadSite(siteSelect.value).catch(e=>setStatus(e.message,"error"));});
  $("[data-add-page]").addEventListener("click",async()=>{const n=prompt("Nom de la nouvelle page :","Nouvelle page");if(n===null||!n.trim())return;try{await createPage(n.trim());setStatus("Nouvelle page créée.","success");}catch(e){setStatus(e.message,"error");}});
  $("[data-rename-page]").addEventListener("click",()=>{const n=prompt("Nouveau titre :",titleInput.value);if(n===null)return;titleInput.value=n;changed();});
- $("[data-delete-page]").addEventListener("click",async()=>{if(pages.length<=1){setStatus("Conservez au moins une page sur votre site.","warning");return;}if(!confirm("Supprimer définitivement cette page ?"))return;const {error}=await sb.from("pages").delete().eq("id",pageId).eq("site_id",siteId);if(error){setStatus(error.message,"error");return;}pages=pages.filter(p=>p.id!==pageId);await selectPage(pages[0].id);pageSelect.querySelector('option[value="'+pageId+'"]')?.remove();setStatus("Page supprimée.","success");});
+ $("[data-delete-page]").addEventListener("click",async()=>{
+  if(pages.length<=1){setStatus("Conservez au moins une page sur votre site.","warning");return;}
+  if(!confirm("Supprimer définitivement cette page ?"))return;
+  const deletedId=pageId;
+  const {error}=await sb.from("pages").delete().eq("id",deletedId).eq("site_id",siteId);
+  if(error){setStatus(error.message,"error");return;}
+  pages=pages.filter(p=>p.id!==deletedId);
+  const option=Array.from(pageSelect.options).find(o=>o.value===deletedId);
+  if(option)option.remove();
+  await selectPage(pages[0].id);
+  setStatus("Page supprimée.","success");
+ });
  $("[data-save-theme]").addEventListener("click",()=>saveTheme().catch(e=>setStatus(e.message,"error")));
  $("[data-logout]").addEventListener("click",async()=>{await sb.auth.signOut();location.href="index.html";});
  window.addEventListener("beforeunload",e=>{if(dirty){e.preventDefault();e.returnValue="";}});
