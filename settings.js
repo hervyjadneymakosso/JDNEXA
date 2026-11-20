@@ -10,7 +10,7 @@
   const site=currentSite();const cfg=site?.settings_json||{};
   fields.title.value=cfg.display_name||site?.nom||"";fields.description.value=cfg.description||"";fields.contact.value=cfg.whatsapp||cfg.phone||"";fields.logo.value=cfg.logo_url||"";
   fields.slug.value=site?.public_slug||slugify(site?.nom);fields.published.checked=Boolean(site?.is_published);
-  const link=$("[data-public-link]");link.hidden=!(site?.is_published&&site?.public_slug);if(!link.hidden)link.href="boutique.html?slug="+encodeURIComponent(site.public_slug);
+  const link=$("[data-public-link]");link.hidden=!(site?.is_published&&site?.public_slug);if(!link.hidden)link.href="site.html?slug="+encodeURIComponent(site.public_slug);
   status("[data-site-status]","");
  }
  async function loadSubscription(){
@@ -24,8 +24,10 @@
   $("[data-account-email]").value=user.email||"";
   const result=await sb.from("sites").select("id,nom,slug,settings_json,public_slug,is_published").order("created_at",{ascending:false});
   if(result.error)throw result.error;sites=result.data||[];select.replaceChildren();
+  const requestedSite=new URLSearchParams(location.search).get("site");
   if(!sites.length){const o=document.createElement("option");o.value="";o.textContent="Aucun site disponible";select.append(o);}
   else sites.forEach(site=>{const o=document.createElement("option");o.value=site.id;o.textContent=site.nom;select.append(o);});
+  if(requestedSite&&sites.some(s=>s.id===requestedSite))select.value=requestedSite;
   fillSite();$("#language").value=localStorage.getItem("jdnexa_language")||"fr";$("#currency").value=localStorage.getItem("jdnexa_currency")||"XAF";
   await loadSubscription();
  }
