@@ -10,6 +10,10 @@
   if(email) email.textContent=session.user.email;
   const {data,error}=await sb.from("sites").select("id,nom,slug,created_at").order("created_at",{ascending:false});
   if(error) throw error;
+  const siteCount=document.querySelector("[data-site-count]");if(siteCount)siteCount.textContent=String(data.length);
+  const siteIds=data.map(site=>site.id);
+  if(siteIds.length){const countResult=await sb.from("collections_donnees").select("id",{count:"exact",head:true}).in("site_id",siteIds);const contentCount=document.querySelector("[data-content-count]");if(contentCount)contentCount.textContent=countResult.error?"—":String(countResult.count||0);}
+  else {const contentCount=document.querySelector("[data-content-count]");if(contentCount)contentCount.textContent="0";}
   list.innerHTML="";
   if(!data.length){list.innerHTML='<div class="empty">Aucun site pour le moment. Créez votre premier site.</div>';return;}
   data.forEach(site=>{
