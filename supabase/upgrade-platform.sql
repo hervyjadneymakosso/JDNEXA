@@ -132,6 +132,52 @@ create trigger jdnexa_product_limit before insert or update of type_donnee,site_
 for each row execute function public.jdnexa_enforce_product_limit();
 
 
+
+-- Suspension effective des espaces marchands à l'expiration.
+-- La lecture des informations de boutique reste disponible pour permettre le renouvellement.
+create or replace function public.jdnexa_is_active_owner()
+returns boolean language sql stable security definer set search_path=public
+as $
+ select exists(select 1 from public.abonnements a
+  where a.owner_id=auth.uid() and a.statut='active' and a.expiration>now());
+$;
+revoke all on function public.jdnexa_is_active_owner() from public;
+grant execute on function public.jdnexa_is_active_owner() to authenticated;
+
+drop policy if exists "owners manage own sites" on public.sites;
+drop policy if exists "owners read own sites" on public.sites;
+create policy "owners read own sites" on public.sites for select to authenticated using(owner_id=auth.uid());
+drop policy if exists "active owners create sites" on public.sites;
+create policy "active owners create sites" on public.sites for insert to authenticated with check(owner_id=auth.uid() and public.jdnexa_is_active_owner());
+drop policy if exists "active owners update sites" on public.sites;
+create policy "active owners update sites" on public.sites for update to authenticated using(owner_id=auth.uid() and public.jdnexa_is_active_owner()) with check(owner_id=auth.uid() and public.jdnexa_is_active_owner());
+drop policy if exists "active owners delete sites" on public.sites;
+create policy "active owners delete sites" on public.sites for delete to authenticated using(owner_id=auth.uid() and public.jdnexa_is_active_owner());
+
+drop policy if exists "owners manage own pages" on public.pages;
+drop policy if exists "active owners manage pages" on public.pages;
+create policy "active owners manage pages" on public.pages for all to authenticated
+using(public.owns_site(site_id) and public.jdnexa_is_active_owner())
+with check(public.owns_site(site_id) and public.jdnexa_is_active_owner());
+
+drop policy if exists "owners manage own collections" on public.collections_donnees;
+drop policy if exists "active owners manage collections" on public.collections_donnees;
+create policy "active owners manage collections" on public.collections_donnees for all to authenticated
+using(public.owns_site(site_id) and public.jdnexa_is_active_owner())
+with check(public.owns_site(site_id) and public.jdnexa_is_active_owner());
+
+drop policy if exists "owners manage site visitors" on public.utilisateurs_finaux;
+drop policy if exists "active owners manage site visitors" on public.utilisateurs_finaux;
+create policy "active owners manage site visitors" on public.utilisateurs_finaux for all to authenticated
+using(public.owns_site(site_id) and public.jdnexa_is_active_owner())
+with check(public.owns_site(site_id) and public.jdnexa_is_active_owner());
+
+drop policy if exists "owners manage site interactions" on public.messages_et_commandes;
+drop policy if exists "active owners manage site interactions" on public.messages_et_commandes;
+create policy "active owners manage site interactions" on public.messages_et_commandes for all to authenticated
+using(public.owns_site(site_id) and public.jdnexa_is_active_owner())
+with check(public.owns_site(site_id) and public.jdnexa_is_active_owner());
+
 -- Les visiteurs publics ne reçoivent jamais owner_id ni les colonnes internes.
 revoke select on public.sites from anon, authenticated;
 grant select (id,nom,slug,settings_json,public_slug,is_published,created_at) on public.sites to anon,authenticated;
