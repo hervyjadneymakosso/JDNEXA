@@ -2,7 +2,7 @@
  const $=s=>document.querySelector(s),canvas=$("[data-canvas]"),props=$("[data-properties]"),status=$("[data-editor-status]");
  if(!canvas)return;
  const params=new URLSearchParams(location.search);let sb,user,siteId=params.get("site"),site=null,pages=[],pageId=null,blocks=[],selectedId=null,dirty=false,settings={};
- const titleInput=$("#page-title-input"),slugInput=$("#page-slug-input"),saveBtn=$("[data-save-page"),pageSelect=$("[data-page-select"),siteSelect=$("[data-site-select");
+ const titleInput=$("#page-title-input"),slugInput=$("#page-slug-input"),saveBtn=$("[data-save-page]")),pageSelect=$("[data-page-select]")),siteSelect=$("[data-site-select]"));
  const uid=()=>crypto.randomUUID();
  const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n;};
  const setStatus=(s,kind="muted")=>{status.textContent=s;status.className="studio-save-state "+kind;};
@@ -11,7 +11,7 @@
  const templates={
  title:{type:"title",text:"Votre titre principal",level:1},text:{type:"text",text:"Présentez votre activité, vos services ou votre projet à vos visiteurs."},
  button:{type:"button",text:"En savoir plus",url:"https://example.com"},image:{type:"image",url:"",alt:"Illustration",caption:""},
- video:{type:"video",url:"",caption:""},gallery:{type:"gallery",images:[]},list:{type:"list",items:["Premier élément","Deuxième élément","Troisième élément"]},spacer:{type:"spacer",height:32},divider:{type:"divider"},article:{type:"article",title:"Titre de l’article",excerpt:"Un résumé de votre publication.",image_url:"",link_url:""},product:{type:"product",title:"Nom du produit",price:"",image_url:"",link_url:""}
+ video:{type:"video",url:"",caption:""},gallery:{type:"gallery",images:[]},list:{type:"list",items:["Premier élément","Deuxième élément","Troisième élément"]},quote:{type:"quote",text:"Une belle citation qui exprime votre vision.",author:"Nom de l’auteur"},testimonial:{type:"testimonial",text:"Une expérience remarquable, un accompagnement de qualité.",author:"Client satisfait",role:"Client"},stats:{type:"stats",items:[{value:"150+",label:"Clients"},{value:"98%",label:"Satisfaction"},{value:"24/7",label:"Disponibilité"}]},faq:{type:"faq",question:"Comment pouvons-nous vous aider ?",answer:"Ajoutez ici une réponse claire à la question de vos visiteurs."},spacer:{type:"spacer",height:32},divider:{type:"divider"},article:{type:"article",title:"Titre de l’article",excerpt:"Un résumé de votre publication.",image_url:"",link_url:""},product:{type:"product",title:"Nom du produit",price:"",image_url:"",link_url:""}
  };
  function previewBlock(b){
   const w=el("section","studio-block"+(selectedId===b.id?" selected":""));
@@ -23,8 +23,13 @@
   if(b.type==="gallery"){const g=el("div","studio-gallery");(b.images||[]).forEach(url=>{const i=el("img");i.src=url;i.alt="Image de galerie";g.append(i);});w.append(g);if(!g.children.length)w.append(el("div","empty","Ajoutez des adresses d'images dans les propriétés."));}
   if(b.type==="list"){const ul=el("ul","");(b.items||[]).forEach(x=>ul.append(el("li","",x)));w.append(ul);}
   if(b.type==="article"||b.type==="product"){const card=el("article","studio-content-card");if(b.image_url){const img=el("img","studio-content-card-image");img.src=b.image_url;img.alt=b.title||"";card.append(img);}card.append(el("h3","",b.title||"Sans titre"));if(b.type==="article"&&b.excerpt)card.append(el("p","",b.excerpt));if(b.type==="product"&&b.price)card.append(el("strong","",b.price+" FCFA"));if(b.link_url)card.append(el("small","studio-link-hint","Lien : "+b.link_url));w.append(card);} 
+  if(b.type==="quote"){const q=el("blockquote","studio-quote",b.text||"");w.append(q);if(b.author)w.append(el("small","",b.author));}
+  if(b.type==="testimonial"){const q=el("div","studio-testimonial");q.append(el("p","", "“"+(b.text||"")+"”"),el("strong","",b.author||""));if(b.role)q.append(el("small","",b.role));w.append(q);}
+  if(b.type==="stats"){const g=el("div","studio-stats");(b.items||[]).forEach(x=>{const c=el("div","studio-stat");c.append(el("strong","",x.value||"0"),el("small","",x.label||"Indicateur"));g.append(c);});w.append(g);}
+  if(b.type==="faq"){const f=el("div","studio-faq");f.append(el("h3","",b.question||"Question"),el("p","",b.answer||"Réponse"));w.append(f);}
   if(b.type==="divider")w.append(el("hr"));
   if(b.type==="spacer"){const s=el("div","studio-spacer");s.style.height=Math.max(8,Math.min(300,Number(b.height)||32))+"px";w.append(s);}
+  const st=b.style||{};w.style.textAlign=["left","center","right"].includes(st.align)?st.align:"";if(/^#[0-9a-f]{6}$/i.test(st.background||""))w.style.backgroundColor=st.background;if(/^#[0-9a-f]{6}$/i.test(st.color||""))w.style.color=st.color;if(Number.isFinite(Number(st.padding)))w.style.padding=Math.max(0,Math.min(100,Number(st.padding)))+"px";if(Number.isFinite(Number(st.radius)))w.style.borderRadius=Math.max(0,Math.min(40,Number(st.radius)))+"px";if(Number.isFinite(Number(st.max_width))&&Number(st.max_width)>0){w.style.maxWidth=Math.max(240,Math.min(1200,Number(st.max_width)))+"px";w.style.marginLeft=w.style.marginRight="auto";}
   w.addEventListener("click",()=>{selectedId=b.id;render();renderProps();});
   return w;
  }
@@ -63,7 +68,9 @@
  function applyTheme(){document.querySelectorAll("[data-theme]").forEach(i=>{const v=settings[i.dataset.theme];if(v!==undefined){if(i.type==="checkbox")i.checked=!!v;else i.value=v;}});}
  async function loadSite(id){siteId=id;const {data,error}=await sb.from("sites").select("id,nom,slug,public_slug,is_published,settings_json").eq("id",id).maybeSingle();if(error)throw error;if(!data)throw Error("Site introuvable ou accès refusé.");site=data;settings=data.settings_json||{};$("[data-site-name]").textContent="Projet : "+site.nom;const publicSlug=site.public_slug||site.slug||"";const publicUrl=location.origin+"/site.html?slug="+encodeURIComponent(publicSlug);const urlNode=$("[data-public-site-url]");if(urlNode){urlNode.textContent=publicUrl;urlNode.href=publicUrl;}const publishBtn=$("[data-publish-site]");if(publishBtn){publishBtn.textContent=site.is_published?"Dépublier le site":"Publier le site";publishBtn.classList.toggle("btn-primary",!site.is_published);}const publishState=$("[data-publish-state]");if(publishState)publishState.textContent=site.is_published?"En ligne":"Non publié";applyTheme();await loadPages();}
  async function init(){sb=window.requireSupabase();const {data:{user:u},error}=await sb.auth.getUser();if(error)throw error;if(!u){location.href="login.html";return;}user=u;const r=await sb.from("sites").select("id,nom").order("created_at",{ascending:false});if(r.error)throw r.error;if(!r.data?.length){location.href="dashboard.html";return;}siteSelect.replaceChildren();r.data.forEach(s=>{const o=el("option","",s.nom);o.value=s.id;siteSelect.append(o);});const chosen=siteId&&r.data.some(s=>s.id===siteId)?siteId:r.data[0].id;siteSelect.value=chosen;await loadSite(chosen);}
- document.querySelectorAll("[data-add-block]").forEach(btn=>btn.addEventListener("click",()=>{const b={...templates[btn.dataset.addBlock],id:uid()};blocks.push(b);selectedId=b.id;changed();render();renderProps();}));
+ document.querySelectorAll("[data-add-block]").forEach(btn=>btn.addEventListener("click",()=>{const b=JSON.parse(JSON.stringify(templates[btn.dataset.addBlock]));b.id=uid();blocks.push(b);selectedId=b.id;changed();render();renderProps();}));
+ document.querySelectorAll("[data-studio-device]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-studio-device]").forEach(x=>x.classList.toggle("active",x===btn));canvas.dataset.viewport=btn.dataset.studioDevice;canvas.style.maxWidth=({desktop:"100%",tablet:"820px",mobile:"390px"})[btn.dataset.studioDevice]||"100%";canvas.style.margin="0 auto";}));
+ const previewToggle=$("[data-studio-preview]");if(previewToggle)previewToggle.addEventListener("click",()=>{const active=canvas.classList.toggle("studio-preview-mode");previewToggle.textContent=active?"Revenir à l’édition":"Prévisualiser";});
  [titleInput,slugInput].forEach(i=>i.addEventListener("input",changed));
  saveBtn.addEventListener("click",()=>savePage().catch(e=>setStatus(e.message,"error")));
  pageSelect.addEventListener("change",async()=>{if(dirty&&!confirm("Abandonner les modifications non enregistrées ?")){pageSelect.value=pageId;return;}await selectPage(pageSelect.value);});
