@@ -9,7 +9,14 @@
 <div class="create-form-grid"><label class="field"><span>Couleur principale</span><input name="primary_color" type="color"></label><label class="field"><span>Couleur de fond</span><input name="background_color" type="color"></label></div>
 <label class="field"><span>Style graphique</span><select name="design_style"><option value="moderne">Moderne professionnel</option><option value="minimal">Minimaliste</option><option value="elegant">Élégant premium</option><option value="audacieux">Audacieux créatif</option><option value="editorial">Éditorial</option></select></label>
 <label class="field"><span>Police d'écriture</span><select name="font_family"><option value="Inter">Inter — Moderne</option><option value="Arial">Arial</option><option value="Georgia">Georgia — Élégante</option><option value="system">Police système</option></select></label>
-<div class="create-section-title compact"><span class="eyebrow">ÉTAPE 2 · CONTENU</span><h2>Votre présentation</h2></div>
+<div class="create-section-title compact"><span class="eyebrow">ÉTAPE 2 · CONTENU ET PAGES</span><h2>Votre présentation</h2></div>
+<fieldset class="create-pages-choice"><legend>Pages à créer avec votre site</legend>
+<label><input type="checkbox" checked disabled> Accueil (obligatoire)</label>
+<label><input type="checkbox" name="extra_pages" value="about" checked> À propos</label>
+<label><input type="checkbox" name="extra_pages" value="services" checked> Services / Offres</label>
+<label><input type="checkbox" name="extra_pages" value="blog"> Articles / Actualités</label>
+<label><input type="checkbox" name="extra_pages" value="contact" checked> Contact</label>
+<p class="muted">Vous pourrez ensuite ajouter autant de pages que votre projet le nécessite dans le Studio.</p></fieldset>
 <label class="field"><span>Titre principal</span><input name="hero_title" maxlength="120"></label>
 <label class="field"><span>Description</span><textarea name="hero_description" rows="3"></textarea></label>
 <label class="field"><span>Texte du bouton</span><input name="hero_button" maxlength="50"></label>
