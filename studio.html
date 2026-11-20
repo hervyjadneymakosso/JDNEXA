@@ -1,1 +1,56 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Studio visuel — JDNEXA</title><link rel="stylesheet" href="style.css"><link rel="icon" href="favicon.svg"></head><body><div class="app-layout"><aside class="sidebar"><a class="brand" href="dashboard.html"><span class="brand-mark">J</span> JDNEXA</a><a class="side-link" href="dashboard.html">⌂ Tableau de bord</a><a class="side-link" href="collections.html">▤ Collections</a><a class="side-link active" href="studio.html">✎ Studio visuel</a><a class="side-link" href="settings.html">⚙ Paramètres</a><a class="side-link" href="pricing.html">◇ Abonnement</a></aside><main class="app-main"><div class="app-top"><div><h1 class="page-title">Studio visuel</h1><p class="muted">Ajoutez et organisez les blocs de votre page.</p></div><div class="editor-actions"><button class="btn btn-light" data-export-json>Exporter JSON</button><button class="btn btn-primary" data-save-page>Enregistrer</button></div></div><p data-editor-status aria-live="polite"></p><div class="editor"><section class="editor-pane"><h3>Ajouter un bloc</h3><button class="block-tool" data-add-block="title">＋ Titre</button><button class="block-tool" data-add-block="text">＋ Texte</button><button class="block-tool" data-add-block="button">＋ Bouton / lien</button><button class="block-tool" data-add-block="image">＋ Image</button><p class="muted" style="font-size:12px">Sélectionnez un bloc pour le modifier, le dupliquer, le supprimer ou le déplacer.</p></section><section class="canvas"><div class="canvas-page" data-canvas><div class="empty">Chargement de la page…</div></div></section><section class="editor-pane" data-properties><h3>Propriétés</h3><p class="muted">Sélectionnez un bloc dans la page.</p></section></div></main></div><script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-client.js"></script><script src="editor.js"></script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1458d4">
+<title>Studio de création — JDNEXA</title>
+<link rel="icon" href="favicon.svg"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-layout">
+<aside class="sidebar">
+<a class="brand" href="dashboard.html"><span class="brand-mark">J</span> JDNEXA</a>
+<a class="side-link" href="dashboard.html">⌂ Tableau de bord</a>
+<a class="side-link" href="collections.html">▤ Produits et contenus</a>
+<a class="side-link active" href="studio.html">✎ Studio de création</a>
+<a class="side-link" href="settings.html">⚙ Paramètres</a>
+<a class="side-link" href="pricing.html">◇ Abonnement</a>
+<button class="side-link" type="button" data-logout>↪ Déconnexion</button>
+</aside>
+<main class="app-main studio-main">
+<header class="studio-header">
+<div><span class="eyebrow">CRÉATION DE SITE</span><h1 class="page-title">Studio de création</h1><p class="muted">Construisez et organisez les éléments de votre page.</p></div>
+<div class="studio-header-actions"><a class="btn btn-light" href="dashboard.html">Quitter le studio</a><button class="btn btn-primary" type="button" data-save-page>Enregistrer les modifications</button></div>
+</header>
+<div class="studio-page-settings panel">
+<div class="field"><label for="page-title-input">Titre de la page</label><input id="page-title-input" maxlength="100" value="Accueil"></div>
+<div class="field"><label for="page-slug-input">Adresse de la page</label><input id="page-slug-input" maxlength="80" value="accueil" pattern="[a-z0-9-]+"></div>
+<div class="studio-save-state" data-editor-status role="status" aria-live="polite">Vos modifications sont prêtes à être enregistrées.</div>
+</div>
+<div class="editor studio-editor">
+<section class="editor-pane">
+<h2>Ajouter des éléments</h2>
+<p class="muted studio-help">Choisissez un élément pour l'ajouter à votre page.</p>
+<button class="block-tool" type="button" data-add-block="title"><span>H</span> Titre</button>
+<button class="block-tool" type="button" data-add-block="text"><span>¶</span> Texte de présentation</button>
+<button class="block-tool" type="button" data-add-block="button"><span>↗</span> Bouton / lien</button>
+<button class="block-tool" type="button" data-add-block="image"><span>▧</span> Image</button>
+<button class="block-tool" type="button" data-add-block="divider"><span>—</span> Séparateur</button>
+<button class="block-tool" type="button" data-add-block="spacer"><span>↕</span> Espace</button>
+<div class="studio-tip">Sélectionnez un élément dans l'aperçu pour modifier son contenu ou son apparence.</div>
+</section>
+<section class="canvas studio-canvas-wrap">
+<div class="canvas-toolbar"><strong>Aperçu de votre page</strong><span class="badge">Édition</span></div>
+<div class="canvas-page studio-canvas" data-canvas><div class="empty">Chargement de votre page…</div></div>
+</section>
+<section class="editor-pane" data-properties>
+<h2>Propriétés</h2><p class="muted">Sélectionnez un élément dans l'aperçu pour le modifier.</p>
+</section>
+</div>
+</main>
+</div>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="editor.js"></script>
+</body></html>
