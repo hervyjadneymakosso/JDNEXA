@@ -83,3 +83,9 @@ p{line-height:1.75}
 .settings-value{font-weight:750;color:#17243b}
 @media(max-width:850px){.sidebar{height:auto;position:relative;display:flex;align-items:center;gap:5px;overflow-x:auto;white-space:nowrap;padding:12px}.sidebar .brand{margin:0 12px 0 0}.side-link{width:auto;flex:0 0 auto}.app-layout{display:block}.app-main{padding:24px 17px}.pricing-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.hero{padding-top:48px}.hero h1{font-size:39px}.pricing-grid,.settings-grid{grid-template-columns:1fr}.settings-full{grid-column:auto}.narrow{padding:24px 19px}.app-main .panel{padding:19px}.page-shell{padding:28px 0 50px}.legal-layout h1{font-size:28px}.stat-grid{grid-template-columns:1fr}.pricing-card{padding:22px}}
+
+.auth-shell{min-height:calc(100vh - 170px);display:grid;place-items:center;padding:54px 18px}
+.auth-shell .narrow{width:100%;margin:auto}
+.auth-shell .narrow form .btn{width:100%}
+.auth-shell .narrow>[data-message],.auth-shell form [data-message]{min-height:20px}
+.auth-shell+.footer{background:#fff}
