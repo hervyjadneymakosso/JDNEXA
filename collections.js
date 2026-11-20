@@ -22,7 +22,7 @@
    actions.append(edit,del);row.append(actions);list.append(row);
   });
  }
- function editItem(item){const d=item.contenu_json||{};form.item_id.value=item.id;form.type_donnee.value=item.type_donnee;form.titre.value=d.titre||"";form.description.value=d.description||"";form.categorie.value=d.categorie||"";form.prix.value=d.prix??"";form.stock.value=d.stock??0;$("[data-image-preview]").hidden=!d.image_url;if(d.image_url)$("[data-image-preview]").src=d.image_url;form.querySelector('[data-cancel-edit]').hidden=false;form.scrollIntoView({behavior:"smooth",block:"start"});}
+ function editItem(item){const d=item.contenu_json||{};form.item_id.value=item.id;form.type_donnee.value=item.type_donnee;form.titre.value=d.titre||"";form.description.value=d.description||"";form.categorie.value=d.categorie||"";form.prix.value=d.prix??"";form.stock.value=d.stock??0;form.version.value=d.version||"";form.download_url.value=d.download_url||"";$("[data-image-preview]").hidden=!d.image_url;if(d.image_url)$("[data-image-preview]").src=d.image_url;form.querySelector('[data-cancel-edit]').hidden=false;form.scrollIntoView({behavior:"smooth",block:"start"});}
  async function uploadImage(file){
   if(!file)return null;
   if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw Error("Format d'image non accepté. Utilisez JPG, PNG ou WebP.");
