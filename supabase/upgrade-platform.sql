@@ -131,6 +131,11 @@ drop trigger if exists jdnexa_product_limit on public.collections_donnees;
 create trigger jdnexa_product_limit before insert or update of type_donnee,site_id on public.collections_donnees
 for each row execute function public.jdnexa_enforce_product_limit();
 
+
+-- Les visiteurs publics ne reçoivent jamais owner_id ni les colonnes internes.
+revoke select on public.sites from anon, authenticated;
+grant select (id,nom,slug,settings_json,public_slug,is_published,created_at) on public.sites to anon,authenticated;
+
 -- Catalogue public : seules les boutiques publiées et leurs produits sont visibles.
 drop policy if exists "public read published shops" on public.sites;
 create policy "public read published shops" on public.sites
