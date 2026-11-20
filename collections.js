@@ -38,14 +38,14 @@
   if(!siteId){const {data,error}=await sb.from("sites").select("id,nom,public_slug,is_published").order("created_at",{ascending:false}).limit(1).maybeSingle();if(error)throw error;if(!data)throw Error("Créez d'abord un site depuis le tableau de bord.");siteId=data.id;site=data;}
   else{const {data,error}=await sb.from("sites").select("id,nom,public_slug,is_published").eq("id",siteId).maybeSingle();if(error)throw error;if(!data)throw Error("Site introuvable ou accès refusé.");site=data;}
   const {data,error}=await sb.from("collections_donnees").select("*").eq("site_id",siteId).order("date_creation",{ascending:false});if(error)throw error;rows=data||[];render();
-  const link=$("[data-store-link]");if(site.is_published&&site.public_slug){const a=document.createElement("a");a.className="btn btn-primary";a.href="boutique.html?slug="+encodeURIComponent(site.public_slug);a.target="_blank";a.textContent="Ouvrir ma boutique publique";link.replaceChildren(a);}else link.textContent="Publiez votre boutique depuis Paramètres pour rendre les produits visibles.";
+  const link=$("[data-store-link]");if(site.is_published&&site.public_slug){const a=document.createElement("a");a.className="btn btn-primary";a.href="site.html?slug="+encodeURIComponent(site.public_slug);a.target="_blank";a.textContent="Ouvrir ma boutique publique";link.replaceChildren(a);}else link.textContent="Publiez votre boutique depuis Paramètres pour rendre les produits visibles.";
  }
  async function remove(id){if(!confirm("Supprimer définitivement ce contenu ?"))return;try{const {error}=await sb.from("collections_donnees").delete().eq("id",id);if(error)throw error;rows=rows.filter(r=>r.id!==id);render();setStatus("Contenu supprimé.",true);}catch(e){setStatus(e.message);}}
  form.addEventListener("submit",async e=>{e.preventDefault();const btn=form.querySelector('[type="submit"]');btn.disabled=true;setStatus("");
   try{
    const id=form.item_id.value;const old=rows.find(r=>r.id===id);let imageUrl=old?.contenu_json?.image_url||null;
    if(form.image.files[0])imageUrl=await uploadImage(form.image.files[0]);
-   const contenu_json={...(old?.contenu_json||{}),titre:form.titre.value.trim(),description:form.description.value.trim(),categorie:form.categorie.value.trim(),prix:form.prix.value===""?null:Number(form.prix.value),stock:Number(form.stock.value||0),image_url:imageUrl};
+   const contenu_json={...(old?.contenu_json||{}),titre:form.titre.value.trim(),description:form.description.value.trim(),categorie:form.categorie.value.trim(),prix:form.prix.value===""?null:Number(form.prix.value),stock:Number(form.stock.value||0),version:form.version.value.trim(),download_url:form.download_url.value.trim(),image_url:imageUrl};
    const payload={site_id:siteId,type_donnee:form.type_donnee.value,contenu_json};
    const result=id?await sb.from("collections_donnees").update(payload).eq("id",id):await sb.from("collections_donnees").insert(payload);
    if(result.error)throw result.error;clearForm();await load();setStatus("Contenu enregistré avec succès.",true);
