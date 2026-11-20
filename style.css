@@ -260,3 +260,18 @@ p{line-height:1.75}
 .public-content-section{margin-top:35px}.public-content-section>h2{font-size:24px}.public-content-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.public-content-card{display:flex;flex-direction:column;gap:9px;background:#fff;border:1px solid #e5eaf2;border-radius:15px;padding:17px}.public-content-image{width:100%;height:170px;object-fit:cover;border-radius:10px}.public-content-label{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:#1458d4;font-weight:800}.public-content-card h3{margin:0;font-size:17px}.public-content-card p{font-size:13px;color:#65738a;white-space:pre-wrap;flex:1}.public-content-card .btn{align-self:flex-start}.public-content-version{color:#68758b}.public-content-price{color:#14213a}
 @media(max-width:750px){.public-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.public-site-hero{padding:20px}}
 @media(max-width:520px){.public-content-grid{grid-template-columns:1fr}.public-site-header{height:65px;padding:0 14px}.public-site-wrap{width:calc(100% - 24px);margin-top:18px}.public-site-hero{align-items:flex-start;gap:13px;padding:16px}.public-site-logo{width:55px;height:55px;flex-basis:55px;font-size:25px}.public-site-hero h1{font-size:24px}.public-site-hero p{font-size:12px}.public-page{padding:18px}.public-page-title{font-size:20px}}
+
+
+/* JDNEXA — identité visuelle des sites créés */
+:root{--page-bg:#f6f8fc}
+.site-intro-enabled .public-site-hero,.site-intro-enabled .public-page,.site-intro-enabled .public-content-card{animation:jdnSiteEnter .55s ease both}
+@keyframes jdnSiteEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.public-site-body{background:var(--page-bg,#f6f8fc)}
+.public-site-body[data-design="minimal"] .public-site-hero,.public-site-body[data-design="minimal"] .public-page,.public-site-body[data-design="minimal"] .public-content-card{box-shadow:none;border-radius:5px}
+.public-site-body[data-design="elegant"] .public-site-hero,.public-site-body[data-design="elegant"] .public-page,.public-site-body[data-design="elegant"] .public-content-card{border-radius:22px;box-shadow:0 16px 45px rgba(20,35,60,.08)}
+.public-site-body[data-design="glass"] .public-site-hero,.public-site-body[data-design="glass"] .public-page,.public-site-body[data-design="glass"] .public-content-card{background:rgba(255,255,255,.82);backdrop-filter:blur(14px);border-color:rgba(255,255,255,.65)}
+.public-site-body[data-design="editorial"] .public-site-hero h1,.public-site-body[data-design="editorial"] .public-page-title{font-family:Georgia,serif;letter-spacing:-.5px}
+.builder-subheading{font-size:14px;margin:8px 0 0;color:#26364e}
+.site-create-form input[type=color]{height:46px;padding:5px;cursor:pointer}
+.site-create-form .publish-toggle{margin:4px 0 12px}
+@media(prefers-reduced-motion:reduce){.site-intro-enabled .public-site-hero,.site-intro-enabled .public-page,.site-intro-enabled .public-content-card{animation:none}}
