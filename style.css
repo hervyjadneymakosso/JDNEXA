@@ -228,3 +228,22 @@ p{line-height:1.75}
 .admin-actions{display:flex;gap:7px;flex-wrap:wrap}
 @media(max-width:850px){.storefront-products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.product-admin-row{grid-template-columns:64px minmax(0,1fr)}.product-admin-thumb{width:64px;height:64px}.product-admin-row .editor-actions{grid-column:1/-1}.storefront{padding-top:20px}.storefront-hero{padding:19px;gap:14px;align-items:flex-start;border-radius:15px}.storefront-logo{width:62px;height:62px;flex-basis:62px;border-radius:15px;font-size:27px}.storefront-hero h1{font-size:25px}.storefront-hero p{font-size:12px}.storefront-toolbar{align-items:stretch;flex-direction:column;margin:25px 0 16px}.storefront-toolbar input{width:100%}.storefront-products{grid-template-columns:1fr 1fr;gap:11px}.store-product-image,.store-product-placeholder{height:135px}.store-product-body{padding:12px}.store-product-body h3{font-size:14px}.store-product-description{font-size:11px}.store-product-price{font-size:12px}.store-product-foot{align-items:flex-start;flex-direction:column}.store-product-foot .btn{width:100%;font-size:11px}.store-modal-card{padding:22px 18px}.admin-table{min-width:650px}.admin-table-wrap{overflow:auto}}
+
+/* JDNEXA — gestion multi-sites et contenus enrichis */
+.site-create-panel{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.4fr);gap:25px;align-items:start;margin:28px 0}
+.site-create-panel h2{margin:7px 0}.site-create-panel p{font-size:13px}
+.site-create-form{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.site-create-form .field{margin:0 0 13px}.site-create-form .field:nth-child(3){grid-column:1/-1}
+.site-create-form>.btn{grid-column:1/-1;justify-self:start}.site-create-form [data-message]{grid-column:1/-1}
+.sites-section{margin-top:32px}.section-heading.compact{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}.section-heading.compact h2{margin:0}.section-heading.compact p{margin:5px 0 0;font-size:13px}
+.site-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.site-card{padding:19px;background:#fff;border:1px solid #e5eaf2;border-radius:16px;box-shadow:0 7px 22px rgba(18,44,86,.035);min-width:0}
+.site-card-top{display:flex;align-items:center;gap:12px}.site-type-icon{width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:13px;background:#edf4ff;color:#1458d4;font-size:23px;font-weight:800}
+.site-card-meta{min-width:0;flex:1}.site-card-meta h3{font-size:16px;margin:0;overflow-wrap:anywhere}.site-card-meta p{font-size:12px;color:#758198;margin:4px 0 0}
+.site-status{font-size:10px;font-weight:800;padding:6px 9px;border-radius:30px;white-space:nowrap}.site-status.published{background:#eaf8f0;color:#087443}.site-status.private{background:#f1f4f8;color:#66758a}
+.site-card-address{font-size:12px;color:#718097;margin:17px 0 13px;overflow-wrap:anywhere}
+.site-card-actions{display:flex;flex-wrap:wrap;gap:7px}.site-card-actions .btn{font-size:11px;min-height:35px;padding:8px 10px}
+.btn-danger-light{border:1px solid #f2d5d5;background:#fff7f7;color:#b42318;border-radius:10px;padding:8px 12px}
+.content-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px}.content-form-grid .field{margin:10px 0}.content-wide{grid-column:1/-1}.content-image-preview{display:block;max-width:170px;max-height:130px;object-fit:contain;border-radius:10px;margin-top:9px}
+@media(max-width:850px){.site-create-panel{grid-template-columns:1fr}.site-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.site-create-form,.content-form-grid{grid-template-columns:1fr}.site-create-form .field:nth-child(3),.site-create-form>.btn,.site-create-form [data-message],.content-wide{grid-column:auto}.site-card{padding:15px}.site-card-actions .btn{flex:1}.section-heading.compact{align-items:flex-start;flex-direction:column}}
