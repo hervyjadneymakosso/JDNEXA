@@ -30,8 +30,9 @@
  function render(){canvas.replaceChildren();if(!blocks.length){canvas.append(el("div","empty","Page vide. Ajoutez un élément depuis le panneau de gauche."));return;}
   blocks.forEach((b,i)=>{const wrap=el("div","studio-block-wrap");wrap.append(previewBlock(b));const controls=el("div","studio-block-controls");
    [["↑",-1],["↓",1]].forEach(([t,d])=>{const x=el("button","btn btn-light",t);x.type="button";x.disabled=i+d<0||i+d>=blocks.length;x.addEventListener("click",e=>{e.stopPropagation();[blocks[i],blocks[i+d]]=[blocks[i+d],blocks[i]];selectedId=blocks[i+d].id;changed();render();renderProps();});controls.append(x);});
-   wrap.append(controls);canvas.append(wrap);
+   wrap.append(controls);wrap.dataset.blockId=b.id;canvas.append(wrap);
   });
+  if(window.Sortable){if(canvas._jdnSortable)canvas._jdnSortable.destroy();canvas._jdnSortable=new Sortable(canvas,{animation:160,draggable:".studio-block-wrap",onEnd:()=>{const ids=[...canvas.querySelectorAll(".studio-block-wrap")].map(x=>x.dataset.blockId);blocks=ids.map(id=>blocks.find(b=>b.id===id)).filter(Boolean);changed();render();renderProps();}});}
  }
  function field(parent,label,key,value,type="text",onValue){const w=el("label","field");w.append(el("span","",label));let input;
   if(type==="textarea"){input=el("textarea");input.value=value??"";}
