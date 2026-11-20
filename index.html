@@ -19,34 +19,11 @@
 </main>
 <footer class="footer"><div class="wrap footer-inner"><div><a class="brand" href="index.html"><span class="brand-mark">J</span> JDNEXA</a><p>Connect. Trade. Grow.</p></div><div class="footer-links"><a href="privacy.html">Confidentialité</a><a href="terms.html">Conditions générales</a><a href="login.html">Connexion</a></div><small>© <span data-year></span> JDNEXA — JDN Agency</small></div></footer>
 <div id="cookie-banner" class="cookie-banner" hidden><div><strong>Votre confidentialité compte</strong><p>Nous utilisons le stockage local nécessaire au fonctionnement. Les mesures d'audience facultatives ne sont activées qu'avec votre accord.</p></div><div class="cookie-actions"><button class="btn btn-light" data-cookie="reject">Refuser</button><button class="btn btn-primary" data-cookie="accept">Accepter</button></div></div>
+
 <style>
-#jdnexa-admin-shortcut{position:fixed;right:12px;bottom:12px;z-index:9999;width:30px;height:30px;border:1px solid rgba(120,130,150,.18);border-radius:50%;background:rgba(20,28,45,.10);color:rgba(20,28,45,.32);font-size:19px;line-height:1;cursor:pointer;opacity:.12;transition:opacity .2s,background .2s}
+#jdnexa-admin-shortcut{position:fixed;right:14px;bottom:14px;z-index:99999;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(120,130,150,.35);border-radius:50%;background:rgba(20,28,45,.16);color:rgba(20,28,45,.65);font-size:21px;line-height:1;cursor:pointer;opacity:.22;transition:opacity .2s,background .2s,color .2s}
 #jdnexa-admin-shortcut:hover,#jdnexa-admin-shortcut:focus-visible{opacity:1;background:#0866ff;color:#fff;outline:2px solid #0866ff}
 </style>
-<button id="jdnexa-admin-shortcut" type="button" aria-label="Administration JDNEXA" title="Administration" hidden>⋮</button>
-<script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-client.js"></script><script src="common.js"></script>
-<script>
-(() => {
-  const button = document.getElementById("jdnexa-admin-shortcut");
-  if (!button || !window.requireSupabase) return;
-  let sb;
-  try { sb = window.requireSupabase(); } catch (_) { return; }
-  const updateAdminShortcut = async () => {
-    try {
-      // getUser() relit le profil auprès de Supabase afin de récupérer
-      // le rôle app_metadata le plus récent, même si le JWT local est ancien.
-      const { data, error } = await sb.auth.getUser();
-      if (error) throw error;
-      const user = data.user;
-      const isOwner = (user?.email || "").toLowerCase() === "hervyjadneymakosso1@gmail.com";
-      const hasAdminRole = user?.app_metadata?.role === "admin";
-      button.hidden = !(user && (isOwner || hasAdminRole));
-    } catch (_) { button.hidden = true; }
-  };
-  button.addEventListener("click", () => { location.href = "admin.html"; });
-  updateAdminShortcut();
-  window.addEventListener("pageshow", updateAdminShortcut);
-  sb.auth.onAuthStateChange(() => updateAdminShortcut());
-})();
-</script>
+<a id="jdnexa-admin-shortcut" href="admin.html" aria-label="Administration JDNEXA" title="Administration">⋮</a>
+<script src="config.js"></script><script src="common.js"></script>
 </body></html>
