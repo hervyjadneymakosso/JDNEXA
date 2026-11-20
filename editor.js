@@ -11,7 +11,7 @@
  const templates={
  title:{type:"title",text:"Votre titre principal",level:1},text:{type:"text",text:"Présentez votre activité, vos services ou votre projet à vos visiteurs."},
  button:{type:"button",text:"En savoir plus",url:"https://example.com"},image:{type:"image",url:"",alt:"Illustration",caption:""},
- video:{type:"video",url:"",caption:""},gallery:{type:"gallery",images:[]},list:{type:"list",items:["Premier élément","Deuxième élément","Troisième élément"]},spacer:{type:"spacer",height:32},divider:{type:"divider"}
+ video:{type:"video",url:"",caption:""},gallery:{type:"gallery",images:[]},list:{type:"list",items:["Premier élément","Deuxième élément","Troisième élément"]},spacer:{type:"spacer",height:32},divider:{type:"divider"},article:{type:"article",title:"Titre de l’article",excerpt:"Un résumé de votre publication.",image_url:"",link_url:""},product:{type:"product",title:"Nom du produit",price:"",image_url:"",link_url:""}
  };
  function previewBlock(b){
   const w=el("section","studio-block"+(selectedId===b.id?" selected":""));
@@ -22,6 +22,7 @@
   if(b.type==="video"){const u=safeUrl(b.url);if(u){const frame=el("iframe","studio-video");frame.src=u;frame.title=b.caption||"Vidéo";frame.allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";frame.allowFullscreen=true;w.append(frame);}else w.append(el("div","empty","Ajoutez l'adresse d'une vidéo compatible."));}
   if(b.type==="gallery"){const g=el("div","studio-gallery");(b.images||[]).forEach(url=>{const i=el("img");i.src=url;i.alt="Image de galerie";g.append(i);});w.append(g);if(!g.children.length)w.append(el("div","empty","Ajoutez des adresses d'images dans les propriétés."));}
   if(b.type==="list"){const ul=el("ul","");(b.items||[]).forEach(x=>ul.append(el("li","",x)));w.append(ul);}
+  if(b.type==="article"||b.type==="product"){const card=el("article","studio-content-card");if(b.image_url){const img=el("img","studio-content-card-image");img.src=b.image_url;img.alt=b.title||"";card.append(img);}card.append(el("h3","",b.title||"Sans titre"));if(b.type==="article"&&b.excerpt)card.append(el("p","",b.excerpt));if(b.type==="product"&&b.price)card.append(el("strong","",b.price+" FCFA"));if(b.link_url)card.append(el("small","studio-link-hint","Lien : "+b.link_url));w.append(card);} 
   if(b.type==="divider")w.append(el("hr"));
   if(b.type==="spacer"){const s=el("div","studio-spacer");s.style.height=Math.max(8,Math.min(300,Number(b.height)||32))+"px";w.append(s);}
   w.addEventListener("click",()=>{selectedId=b.id;render();renderProps();});
@@ -47,6 +48,7 @@
   if(b.type==="button")field(props,"Adresse du lien","url",b.url,"url");
   if(b.type==="image"){field(props,"Adresse de l'image (URL)","url",b.url,"url");field(props,"Lien ouvert au clic","link_url",b.link_url||"","url");field(props,"Texte alternatif","alt",b.alt);field(props,"Légende","caption",b.caption,"textarea");const upload=el("label","field");upload.append(el("span","","Déposer une image depuis l'appareil"));const f=el("input");f.type="file";f.accept="image/jpeg,image/png,image/webp";f.addEventListener("change",async()=>{try{const url=await uploadFile(f.files[0]);b.url=url;changed();render();renderProps();}catch(e){setStatus(e.message,"error");}});upload.append(f);props.append(upload);}
   if(b.type==="video"){field(props,"Adresse vidéo (YouTube/Vimeo ou MP4)","url",b.url,"url");field(props,"Titre / légende","caption",b.caption,"text");}
+  if(b.type==="article"||b.type==="product"){field(props,"Titre","title",b.title||"","text");if(b.type==="article")field(props,"Résumé","excerpt",b.excerpt||"","textarea");if(b.type==="product")field(props,"Prix (FCFA)","price",b.price||"","text");field(props,"Adresse de l’image","image_url",b.image_url||"","url");field(props,"Lien de l’article / produit","link_url",b.link_url||"","url");}
   if(b.type==="gallery"){field(props,"Adresses des images (une URL par ligne)","images",(b.images||[]).join("\n"),"textarea",v=>{b.images=v.split("\n").map(x=>safeUrl(x.trim())).filter(Boolean);changed();render();});field(props,"Liens au clic (même ordre, une URL par ligne)","link_urls",(b.link_urls||[]).join("\n"),"textarea",v=>{b.link_urls=v.split("\n").map(x=>safeUrl(x.trim())||"");changed();render();});const upload=el("label","field");upload.append(el("span","","Déposer plusieurs images"));const f=el("input");f.type="file";f.multiple=true;f.accept="image/jpeg,image/png,image/webp";f.addEventListener("change",async()=>{try{for(const file of f.files)b.images.push(await uploadFile(file));changed();render();renderProps();}catch(e){setStatus(e.message,"error");}});upload.append(f);props.append(upload);}
   if(b.type==="list")field(props,"Un élément par ligne","items",(b.items||[]).join("\n"),"textarea",v=>{b.items=v.split("\n");changed();render();});
   if(b.type==="spacer")field(props,"Hauteur en pixels","height",b.height||32,"number");
