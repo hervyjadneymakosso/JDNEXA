@@ -6,11 +6,19 @@
  };
  const icons={boutique:"▣",marketplace:"▦",rencontre:"♡",reseau_social:"◎",blog:"▤",streaming:"▶",jeux:"♟",vitrine:"▧",portfolio:"✦",emploi:"▣",education:"⌘",forum:"☷",annonces:"▤",voyage:"✈",immobilier:"⌂",finance:"◇",sante:"✚",administration:"▥",comparateur:"⇄",wiki:"W",recherche:"⌕",messagerie:"✉",saas:"⌘",crowdfunding:"♡",association:"♧",livraison:"↗",cloud:"☁",evenementiel:"▣",landing:"↗"};
  const slugify=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,70);
- let draftBlocks=[
-  {id:"draft-title",type:"title",level:1,text:"Mon nouveau site"},
-  {id:"draft-text",type:"text",text:"Présentez votre activité et vos idées au monde entier."},
-  {id:"draft-button",type:"button",text:"Découvrir",url:"#"}
- ];
+ const templatePresets={
+  commerce:{name:"Commerce Pro",style:"moderne",primary:"#1458d4",bg:"#f6f8fc",blocks:[{type:"title",level:1,text:"Les essentiels, au meilleur endroit"},{type:"text",text:"Découvrez une sélection pensée pour vous. Qualité, simplicité et service au rendez-vous."},{type:"button",text:"Voir la boutique",url:"#produits"},{type:"title",level:2,text:"Nos catégories"},{type:"list",items:["Nouveautés","Meilleures ventes","Offres du moment"]},{type:"divider"},{type:"title",level:2,text:"Pourquoi nous choisir ?"},{type:"text",text:"Paiement sécurisé · Livraison suivie · Service client disponible"}]},
+  agency:{name:"Agence Moderne",style:"minimal",primary:"#182b49",bg:"#ffffff",blocks:[{type:"title",level:1,text:"Faisons grandir vos ambitions."},{type:"text",text:"Nous transformons vos idées en expériences digitales claires, utiles et mémorables."},{type:"button",text:"Parler de votre projet",url:"#contact"},{type:"title",level:2,text:"Nos expertises"},{type:"list",items:["Stratégie & conseil","Design & identité","Développement digital"]},{type:"title",level:2,text:"Une méthode simple, des résultats concrets."},{type:"text",text:"Échangeons sur vos objectifs et construisons la bonne solution."}]},
+  editorial:{name:"Magazine Éditorial",style:"editorial",primary:"#a34b2d",bg:"#fbf7f1",blocks:[{type:"title",level:1,text:"Les idées qui font avancer."},{type:"text",text:"Analyses, actualités et histoires à découvrir."},{type:"image",url:"",alt:"Image principale",caption:"À la une"},{type:"title",level:2,text:"À la une aujourd'hui"},{type:"list",items:["Le grand dossier de la semaine","Comprendre les nouvelles tendances","Les voix qui inspirent"]},{type:"button",text:"Lire les articles",url:"#articles"}]},
+  creator:{name:"Portfolio Créatif",style:"elegant",primary:"#7048c8",bg:"#f8f6fc",blocks:[{type:"title",level:1,text:"Créer avec intention."},{type:"text",text:"Je suis créateur indépendant. Voici une sélection de projets, d'idées et d'expériences."},{type:"button",text:"Découvrir mes projets",url:"#projets"},{type:"title",level:2,text:"Projets sélectionnés"},{type:"gallery",images:[]},{type:"title",level:2,text:"À propos"},{type:"text",text:"Une approche sensible, exigeante et tournée vers l'essentiel."}]},
+  community:{name:"Communauté",style:"moderne",primary:"#087f75",bg:"#f3faf8",blocks:[{type:"title",level:1,text:"Votre communauté commence ici."},{type:"text",text:"Rencontrez, échangez et partagez avec des personnes qui ont les mêmes centres d'intérêt."},{type:"button",text:"Rejoindre la communauté",url:"#inscription"},{type:"title",level:2,text:"Des espaces pour échanger"},{type:"list",items:["Discussions récentes","Groupes et centres d'intérêt","Événements de la communauté"]},{type:"title",level:2,text:"Un espace ouvert à tous."}]},
+  dating:{name:"Rencontre Élégance",style:"elegant",primary:"#a63c68",bg:"#fff7fa",blocks:[{type:"title",level:1,text:"Les belles rencontres commencent ici."},{type:"text",text:"Un espace bienveillant pour faire connaissance, partager et créer de vraies connexions."},{type:"button",text:"Créer mon profil",url:"#inscription"},{type:"title",level:2,text:"Découvrez des profils"},{type:"gallery",images:[]},{type:"title",level:2,text:"Une expérience respectueuse et sécurisée"},{type:"text",text:"Respect, confidentialité et modération au cœur de la communauté."}]},
+  media:{name:"Studio Média",style:"audacieux",primary:"#e34d32",bg:"#111827",blocks:[{type:"title",level:1,text:"Play. Listen. Discover."},{type:"text",text:"Vos vidéos, podcasts et contenus favoris réunis dans un seul espace."},{type:"button",text:"Explorer les contenus",url:"#medias"},{type:"title",level:2,text:"À découvrir"},{type:"gallery",images:[]},{type:"title",level:2,text:"Les dernières nouveautés"},{type:"list",items:["Épisodes récents","Sélections de la semaine","Créateurs à suivre"]}]},
+  saas:{name:"SaaS Dashboard",style:"minimal",primary:"#2563eb",bg:"#f5f8ff",blocks:[{type:"title",level:1,text:"Pilotez votre activité simplement."},{type:"text",text:"Une plateforme claire pour organiser votre travail, suivre vos résultats et gagner du temps."},{type:"button",text:"Commencer gratuitement",url:"#inscription"},{type:"title",level:2,text:"Tout votre espace au même endroit"},{type:"list",items:["Tableau de bord intelligent","Automatisations utiles","Rapports et statistiques"]},{type:"title",level:2,text:"Conçu pour vous accompagner."},{type:"text",text:"Démarrez rapidement et faites évoluer votre espace selon vos besoins."}]}
+ };
+ let selectedTemplate="commerce";
+ let draftBlocks=templatePresets.commerce.blocks.map((b,i)=>({...b,id:"draft-"+i}));
+
  let selectedDraft=null;
  function renderDraft(){
   const screen=$("[data-live-preview]");if(!screen)return;
@@ -41,7 +49,7 @@
   const cards=document.createElement("div");cards.className="preview-site-cards";for(let i=0;i<3;i++){const c=document.createElement("div");const b=document.createElement("b"),a=document.createElement("i"),d=document.createElement("i");c.append(b,a,d);cards.append(c);}screen.append(cards);
   const foot=document.createElement("div");foot.className="preview-site-footer";foot.textContent="© "+(form.nom.value.trim()||"Mon projet")+" — Tous droits réservés";screen.append(foot);
   const primary=form.primary_color.value||"#1458d4",background=form.background_color.value||"#f6f8fc";
-  screen.style.setProperty("--preview-primary",primary);screen.style.setProperty("--preview-background",background);screen.dataset.design=form.design_style.value||"moderne";
+  screen.style.setProperty("--preview-primary",primary);screen.style.setProperty("--preview-background",background);screen.dataset.design=form.design_style.value||"moderne";screen.dataset.template=selectedTemplate;
   const address=$("[data-preview-address]");if(address)address.textContent=(slugify(form.slug.value)||"votre-site")+".jdnexa";
   const label=$("[data-preview-selection]");if(label){const b=draftBlocks.find(x=>x.id===selectedDraft);label.textContent=b?"Élément sélectionné : "+b.type:"Sélectionnez un élément pour le modifier";}
   const up=$("[data-preview-up]"),down=$("[data-preview-down]"),del=$("[data-preview-delete]");const idx=draftBlocks.findIndex(x=>x.id===selectedDraft);
@@ -104,6 +112,7 @@
  ["nom","type_site","design_style","primary_color","background_color"].forEach(name=>form.elements[name]?.addEventListener("input",updateLivePreview));
  ["type_site","design_style"].forEach(name=>form.elements[name]?.addEventListener("change",updateLivePreview));
  updateLivePreview();
+ document.querySelectorAll("[data-template]").forEach(card=>card.addEventListener("click",()=>{const key=card.dataset.template,preset=templatePresets[key];if(!preset)return;selectedTemplate=key;document.querySelectorAll("[data-template]").forEach(x=>x.classList.toggle("active",x===card));form.elements.template_design.value=key;form.elements.design_style.value=preset.style;form.elements.primary_color.value=preset.primary;form.elements.background_color.value=preset.bg;draftBlocks=preset.blocks.map((b,i)=>({...b,id:"draft-"+key+"-"+i,items:b.items?[...b.items]:undefined,images:b.images?[...b.images]:undefined}));selectedDraft=null;renderDraft();}));
  document.querySelectorAll("[data-preview-add]").forEach(btn=>btn.addEventListener("click",()=>addDraftBlock(btn.dataset.previewAdd)));
  $("[data-preview-up]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>0){[draftBlocks[i-1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i-1]];renderDraft();}});
  $("[data-preview-down]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>=0&&i<draftBlocks.length-1){[draftBlocks[i+1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i+1]];renderDraft();}});
@@ -113,13 +122,13 @@
   try{
    const nom=form.nom.value.trim(),slug=slugify(form.slug.value),type=form.type_site.value;
    if(!nom||slug.length<2)throw Error("Indiquez un nom et un identifiant valide.");
-   const settings={site_type:type,display_name:nom,description:"Bienvenue sur "+nom,template:type,design_style:form.design_style.value,font_family:form.font_family.value,primary_color:form.primary_color.value,background_color:form.background_color.value,intro_animation:form.intro_animation.checked};
+   const settings={site_type:type,display_name:nom,description:"Bienvenue sur "+nom,template:type,template_design:selectedTemplate,design_style:form.design_style.value,font_family:form.font_family.value,primary_color:form.primary_color.value,background_color:form.background_color.value,intro_animation:form.intro_animation.checked};
    const {data,error}=await sb.from("sites").insert({owner_id:user.id,nom,slug,type_site:type,settings_json:settings}).select("id").single();
    if(error)throw error;
-   const blocks=draftBlocks.map(b=>({...b,id:crypto.randomUUID(),items:b.items?[...b.items]:undefined}));
+   const blocks=draftBlocks.map(b=>({...b,id:crypto.randomUUID(),items:b.items?[...b.items]:undefined,images:b.images?[...b.images]:undefined}));
    const {error:pageError}=await sb.from("pages").insert({site_id:data.id,titre:"Accueil",slug:"accueil",content_json:{blocks}});
    if(pageError)throw pageError;
-   form.reset();draftBlocks=[{id:"draft-title",type:"title",level:1,text:nom},{id:"draft-text",type:"text",text:"Présentez votre activité et vos idées au monde entier."},{id:"draft-button",type:"button",text:"Découvrir",url:"#"}];selectedDraft=null;updateLivePreview();say(status,"Votre site a été créé avec les éléments de votre aperçu. Ouvrez le Studio pour continuer.",true);await load();
+   form.reset();selectedTemplate="commerce";form.elements.template_design.value="commerce";document.querySelectorAll("[data-template]").forEach(x=>x.classList.toggle("active",x.dataset.template==="commerce"));draftBlocks=templatePresets.commerce.blocks.map((b,i)=>({...b,id:"draft-"+i}));selectedDraft=null;updateLivePreview();say(status,"Votre site a été créé avec les éléments de votre aperçu. Ouvrez le Studio pour continuer.",true);await load();
   }catch(err){say(status,err.message||"La création du site a échoué.");}
   finally{btn.disabled=false;}
  });
