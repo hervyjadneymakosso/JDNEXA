@@ -49,10 +49,14 @@
 <div class="settings-actions"><button class="btn btn-primary" data-save-preferences>Enregistrer les préférences</button><span data-pref-status aria-live="polite"></span></div>
 </section>
 <section class="settings-card">
-<h2>Formule et facturation</h2><p>Consultez les formules et les modalités de renouvellement de JDNEXA.</p>
-<div class="field"><label>Formules disponibles</label><div class="settings-value">Découverte · Pro · Business</div></div>
-<p>Le renouvellement manuel est prévu. Le renouvellement automatique sera proposé uniquement avec un prestataire compatible et après votre autorisation explicite.</p>
-<a class="btn btn-light" href="pricing.html">Voir les formules et tarifs</a>
+<h2>Formule et facturation</h2><p>Consultez votre formule active et envoyez une demande de renouvellement.</p>
+<div class="field"><label>Votre formule actuelle</label><div class="settings-value" data-current-plan>Chargement…</div></div>
+<div class="field"><label>Expiration</label><div class="settings-value" data-plan-expiry>—</div></div>
+<div class="field"><label for="payment-plan">Formule souhaitée</label><select id="payment-plan"><option value="PRO">PRO — 1 000 FCFA/mois · 10 000 FCFA/an</option><option value="BUSINESS">BUSINESS — 2 500 FCFA/mois · 25 000 FCFA/an</option></select></div>
+<div class="field"><label for="payment-cycle">Période</label><select id="payment-cycle"><option value="monthly">Mensuelle</option><option value="annual">Annuelle</option></select></div>
+<div class="field"><label for="payment-method">Moyen de paiement</label><select id="payment-method"><option>Airtel Money</option><option>MTN MoMo</option><option>Autre</option></select></div>
+<div class="field"><label for="payment-reference">Référence de paiement (si déjà réglé)</label><input id="payment-reference" maxlength="120" placeholder="Référence de transaction"></div>
+<div class="settings-actions"><button class="btn btn-primary" data-payment-request>Envoyer une demande de renouvellement</button><a class="btn btn-light" href="pricing.html">Voir les offres</a><span data-payment-status aria-live="polite"></span></div>
 </section>
 <section class="settings-card settings-full">
 <h2>Assistance et informations légales</h2><p>Retrouvez les règles qui encadrent l'utilisation de JDNEXA.</p>
