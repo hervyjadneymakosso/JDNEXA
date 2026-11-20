@@ -33,6 +33,8 @@
    else if(b.type==="list"){node=document.createElement("ul");(b.items||[]).forEach(x=>{const li=document.createElement("li");li.textContent=x;node.append(li);});}
    else {node=document.createElement("hr");}
    node.addEventListener("input",()=>{if(["title","text","button"].includes(b.type)){b.text=node.textContent;selectedDraft=b.id;}});
+   if(b.type==="button")node.addEventListener("dblclick",e=>{e.preventDefault();const value=prompt("Adresse du bouton :",b.url||"#");if(value!==null){b.url=value.trim();selectedDraft=b.id;renderDraft();}});
+   if(b.type==="image")node.addEventListener("dblclick",()=>{const value=prompt("Nouvelle adresse HTTPS de l'image :",b.url||"");if(value){try{const u=new URL(value);if(!["https:","http:"].includes(u.protocol))throw Error();b.url=u.href;renderDraft();}catch{alert("Adresse invalide.");}}});
    wrap.append(node);wrap.addEventListener("click",e=>{if(e.target.isContentEditable)return;selectedDraft=b.id;renderDraft();});
    screen.append(wrap);
   });
