@@ -1,0 +1,1 @@
+window.JDNEXA_CONFIG={SUPABASE_URL:"https://jzqlkbbzvqxdvsnnkpjz.supabase.co",SUPABASE_ANON_KEY:"sb_publishable_VeYoNCBHVMdA7F6Gx-Masw_W9szc2dv"};
