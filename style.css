@@ -382,3 +382,11 @@ p{line-height:1.75}
 .preview-screen[data-template="community"] .preview-site-hero{background:#eaf8f5;color:#123b37}
 @media(max-width:900px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.template-library{padding:15px}.template-thumb{height:100px}}
 @media(max-width:520px){.template-library-head{display:block}.template-count{display:inline-block;margin-top:9px}.template-grid{gap:9px}.template-card{padding:7px}.template-card.active{padding:6px}.template-thumb{height:84px}}
+
+/* Drag and drop interactions */
+.preview-draft-block,.studio-block-wrap{cursor:grab;touch-action:pan-y}
+.preview-draft-block:active,.studio-block-wrap:active{cursor:grabbing}
+.sortable-ghost{opacity:.25!important;background:#dceaff!important}
+.sortable-chosen{box-shadow:0 8px 25px #19375b20}
+.studio-tip{font-size:12px;color:#64748b;line-height:1.5}
+@media(max-width:760px){.template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.site-create-panel{display:block}.site-live-preview{margin-top:20px}}
