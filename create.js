@@ -32,7 +32,15 @@
    const settings={site_type:category,display_name:nom,description:desc.value,template:category,template_design:key,design_style:form.elements.design_style.value,font_family:form.elements.font_family.value,primary_color:form.elements.primary_color.value,background_color:form.elements.background_color.value,intro_animation:form.elements.intro_animation.checked};
    const {data,error}=await sb.from("sites").insert({owner_id:user.id,nom,slug:cleanSlug,public_slug:cleanSlug,is_published:false,type_site:category,settings_json:settings}).select("id").single();if(error)throw error;
    const blocks=preset.blocks.map(b=>({...b,id:crypto.randomUUID(),items:b.items?[...b.items]:undefined,images:b.images?[...b.images]:undefined}));if(blocks[0]?.type==="title")blocks[0].text=title.value;if(blocks[1]?.type==="text")blocks[1].text=desc.value;const buttonBlock=blocks.find(b=>b.type==="button");if(buttonBlock)buttonBlock.text=button.value;
-   const {error:pageError}=await sb.from("pages").insert({site_id:data.id,titre:"Accueil",slug:"accueil",content_json:{blocks}});if(pageError){await sb.from("sites").delete().eq("id",data.id);throw pageError;}
+   const pageRows=[{site_id:data.id,titre:"Accueil",slug:"accueil",content_json:{blocks}}];
+   const pageDefaults={
+    about:{titre:"À propos",slug:"a-propos",blocks:[{type:"title",level:1,text:"À propos de "+nom},{type:"text",text:"Présentez votre histoire, votre mission et les valeurs qui vous distinguent."},{type:"image",url:preset.blocks.find(b=>b.type==="image")?.url||"",alt:"Notre univers"}]},
+    services:{titre:"Services / Offres",slug:"services",blocks:[{type:"title",level:1,text:"Nos services et offres"},{type:"text",text:"Présentez ici vos prestations, produits ou solutions."},{type:"list",items:["Notre offre principale","Nos solutions","Accompagnement et assistance"]}]},
+    blog:{titre:"Articles / Actualités",slug:"actualites",blocks:[{type:"title",level:1,text:"Articles et actualités"},{type:"text",text:"Publiez ici vos nouvelles, conseils et articles."},{type:"article",title:"Première publication",excerpt:"Votre premier article peut être modifié dans le Studio.",image_url:preset.blocks.find(b=>b.type==="image")?.url||"",link_url:"#"}]},
+    contact:{titre:"Contact",slug:"contact",blocks:[{type:"title",level:1,text:"Contactez-nous"},{type:"text",text:"Ajoutez ici vos coordonnées, horaires et moyens de contact."},{type:"button",text:"Nous contacter",url:"#"}]}
+   };
+   [...form.querySelectorAll('[name="extra_pages"]:checked')].forEach(input=>{const p=pageDefaults[input.value];if(p)pageRows.push({site_id:data.id,titre:p.titre,slug:p.slug,content_json:{blocks:p.blocks.map(b=>({...b,id:crypto.randomUUID()}))}});});
+   const {error:pageError}=await sb.from("pages").insert(pageRows);if(pageError){await sb.from("sites").delete().eq("id",data.id);throw pageError;}
    message.textContent="Site créé. Ouverture du Studio…";message.className="success";location.href="studio.html?site="+encodeURIComponent(data.id);
   }catch(err){message.textContent=err.message||"La création du site a échoué.";message.className="error";submit.disabled=false;}
  });
