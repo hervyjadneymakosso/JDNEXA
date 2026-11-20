@@ -31,7 +31,7 @@
   const nav=$("[data-page-nav]"),pageRoot=$("[data-public-pages]");nav.replaceChildren();pageRoot.replaceChildren();
   if(pages.length){const requestedPage=params.get("page");const active=pages.find(p=>p.slug===requestedPage)||pages[0];pages.forEach(page=>{const a=node("a","public-page-link",page.titre||"Page");a.href="site.html?slug="+encodeURIComponent(slug)+"&page="+encodeURIComponent(page.slug||"");if(page.id===active.id)a.classList.add("active");nav.append(a);});const section=node("article","public-page");section.id="page-"+active.id;section.append(node("h2","public-page-title",active.titre||"Page"));(Array.isArray(active.content_json?.blocks)?active.content_json.blocks:[]).forEach(b=>section.append(renderBlock(b)));pageRoot.append(section);}
   else pageRoot.append(node("div","empty","Ce site sera bientôt disponible."));
-  const root=$("[data-public-content]");root.replaceChildren();const type=site.type_site;
+  const contentRoot=$("[data-public-content]");contentRoot.replaceChildren();const type=site.type_site;
   const visible=content.filter(item=>item.type_donnee!=="profil_rencontre");
   $("[data-content-heading]").textContent=type==="logiciels"?"Logiciels et applications":type==="blog"||type==="actualites"?"Publications":type==="portfolio"?"Galerie et créations":type==="services"?"Nos services":"Découvrir nos contenus";
   visible.forEach(item=>{const d=item.contenu_json||{},card=node("article","public-content-card");
@@ -40,9 +40,9 @@
    card.append(node("h3","",d.titre||"Sans titre"));if(d.version)card.append(node("small","public-content-version","Version "+d.version));card.append(node("p","",d.description||""));
    if(d.prix!==null&&d.prix!==undefined)card.append(node("strong","public-content-price",new Intl.NumberFormat("fr-FR").format(Number(d.prix)||0)+" FCFA"));
    const url=safeUrl(d.download_url||"");if(url){const a=node("a","btn btn-primary",item.type_donnee==="logiciel"?"Télécharger / Voir le logiciel":"En savoir plus");a.href=url;a.target="_blank";a.rel="noopener noreferrer";card.append(a);}
-   root.append(card);
+   contentRoot.append(card);
   });
-  if(!visible.length)root.append(node("div","empty","Aucun contenu supplémentaire n'a encore été publié."));
+  if(!visible.length)contentRoot.append(node("div","empty","Aucun contenu supplémentaire n'a encore été publié."));
  }
  init().catch(e=>{$("[data-public-name]").textContent="Site indisponible";$("[data-public-pages]").replaceChildren(node("div","empty",e.message||"Impossible de charger ce site."));});
 })();
