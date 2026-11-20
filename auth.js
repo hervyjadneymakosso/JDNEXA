@@ -6,20 +6,29 @@
   const submit = form.querySelector("[type=submit]");
   const destination = "dashboard.html";
 
-  // Si une session existe déjà, ne pas afficher à nouveau le formulaire.
-  // Supabase conserve la session dans le stockage local du navigateur.
-  (async () => {
+  // Vérifie la session à l'ouverture ET lorsque le navigateur restaure
+  // cette page depuis son cache après un retour arrière.
+  let redirecting = false;
+  async function continueIfConnected() {
+    if (redirecting) return;
     try {
       const sb = window.requireSupabase();
       const { data, error } = await sb.auth.getSession();
       if (error) throw error;
       if (data.session) {
+        redirecting = true;
         location.replace(destination);
       }
     } catch (err) {
       console.error("Vérification de session JDNEXA :", err);
     }
-  })();
+  }
+
+  continueIfConnected();
+  window.addEventListener("pageshow", continueIfConnected);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") continueIfConnected();
+  });
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
