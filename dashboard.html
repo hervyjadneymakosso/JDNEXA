@@ -7,7 +7,21 @@
 <header class="app-top"><div><span class="eyebrow">VOTRE ESPACE DE CRÉATION</span><h1 class="page-title">Tableau de bord</h1><p class="muted">Bienvenue, <span data-user-email>…</span></p></div><a class="btn btn-light" href="pricing.html">Voir les offres</a></header>
 <div class="stat-grid"><div class="stat"><span class="muted">Mes sites</span><strong data-site-count>0</strong><small class="muted">Sites dans votre espace</small></div><div class="stat"><span class="muted">Contenus</span><strong data-content-count>0</strong><small class="muted">Articles, produits et fichiers</small></div><div class="stat"><span class="muted">Abonnement</span><strong data-plan-name>…</strong><small class="muted" data-plan-limit>Chargement des limites</small></div></div>
 <section class="panel site-create-panel"><div><span class="eyebrow">NOUVEAU PROJET</span><h2>Créer un site web</h2><p class="muted">Créez plusieurs projets selon votre formule : commerce, rencontre, réseau social, médias, jeux, entreprise, éducation et bien plus.</p><div class="notice">Chaque site possède ses propres pages, contenus, design, couleurs et paramètres. Vous pouvez le modifier, le publier ou le supprimer depuis votre espace.</div></div>
-<form data-create-site class="site-create-form">
+<section class="template-library content-wide">
+ <div class="template-library-head"><div><span class="eyebrow">JDNEXA DESIGN LIBRARY</span><h3>Choisissez un modèle professionnel</h3><p class="muted">Chaque modèle propose une mise en page, des sections et une identité visuelle de départ. Vous pourrez tout personnaliser ensuite.</p></div><span class="template-count">8 modèles</span></div>
+ <div class="template-grid" data-template-grid>
+  <button type="button" class="template-card active" data-template="commerce"><span class="template-thumb thumb-commerce"><i></i><b></b><em></em><small></small></span><strong>Commerce Pro</strong><small>Boutique · Marketplace</small></button>
+  <button type="button" class="template-card" data-template="agency"><span class="template-thumb thumb-agency"><i></i><b></b><em></em><small></small></span><strong>Agence Moderne</strong><small>Entreprise · Services</small></button>
+  <button type="button" class="template-card" data-template="editorial"><span class="template-thumb thumb-editorial"><i></i><b></b><em></em><small></small></span><strong>Magazine Éditorial</strong><small>Blog · Actualités</small></button>
+  <button type="button" class="template-card" data-template="creator"><span class="template-thumb thumb-creator"><i></i><b></b><em></em><small></small></span><strong>Portfolio Créatif</strong><small>Portfolio · Artiste</small></button>
+  <button type="button" class="template-card" data-template="community"><span class="template-thumb thumb-community"><i></i><b></b><em></em><small></small></span><strong>Communauté</strong><small>Réseau social · Forum</small></button>
+  <button type="button" class="template-card" data-template="dating"><span class="template-thumb thumb-dating"><i></i><b></b><em></em><small></small></span><strong>Rencontre Élégance</strong><small>Rencontre · Membres</small></button>
+  <button type="button" class="template-card" data-template="media"><span class="template-thumb thumb-media"><i></i><b></b><em></em><small></small></span><strong>Studio Média</strong><small>Streaming · Podcasts</small></button>
+  <button type="button" class="template-card" data-template="saas"><span class="template-thumb thumb-saas"><i></i><b></b><em></em><small></small></span><strong>SaaS Dashboard</strong><small>Logiciel · Application</small></button>
+ </div>
+ <input type="hidden" name="template_design" value="commerce" form="jdn-create-form">
+</section>
+<form id="jdn-create-form" data-create-site class="site-create-form">
 <label class="field"><span>Nom du site</span><input name="nom" placeholder="Ex. Ma plateforme, Mon magazine…" required maxlength="80"></label>
 <label class="field"><span>Adresse souhaitée</span><input name="slug" placeholder="mon-projet" required maxlength="80" pattern="[a-zA-Z0-9-]+" title="Lettres sans accents, chiffres et tirets uniquement"></label>
 <label class="field content-wide"><span>Catégorie du site</span><select name="type_site" required>
