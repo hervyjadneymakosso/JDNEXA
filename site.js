@@ -9,7 +9,14 @@
   const sb=window.requireSupabase();
   const siteResult=await sb.from("sites").select("id,nom,slug,type_site,settings_json,public_slug,is_published").eq("public_slug",slug).eq("is_published",true).maybeSingle();
   if(siteResult.error)throw siteResult.error;if(!siteResult.data)throw Error("Ce site n'existe pas ou n'est pas publié.");
-  const site=siteResult.data,cfg=site.settings_json||{};document.title=(cfg.display_name||site.nom)+" — JDNEXA";
+  const site=siteResult.data,cfg=site.settings_json||{};
+  const root=document.documentElement;
+  if(/^#[0-9a-f]{6}$/i.test(cfg.primary_color||""))root.style.setProperty("--primary",cfg.primary_color);
+  if(/^#[0-9a-f]{6}$/i.test(cfg.background_color||""))root.style.setProperty("--page-bg",cfg.background_color);
+  if(["Inter","Arial","Georgia","system"].includes(cfg.font_family))document.body.style.fontFamily=cfg.font_family==="system"?"system-ui,sans-serif":cfg.font_family+",sans-serif";
+  document.body.classList.toggle("site-intro-enabled",cfg.intro_animation!==false);
+  document.body.dataset.design=cfg.design_style||"moderne";
+  document.title=(cfg.display_name||site.nom)+" — JDNEXA";
   $("[data-public-name]").textContent=cfg.display_name||site.nom;$("[data-public-description]").textContent=cfg.description||"";
   $("[data-public-type]").textContent=types[site.type_site]||"Site";
   const logo=$("[data-public-logo]");logo.textContent=(site.nom||"J").slice(0,1).toUpperCase();
