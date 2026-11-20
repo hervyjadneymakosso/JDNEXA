@@ -25,6 +25,19 @@
 <label class="field"><span>Couleur principale</span><input name="primary_color" type="color" value="#1458d4"></label>
 <label class="field"><span>Couleur de fond</span><input name="background_color" type="color" value="#f6f8fc"></label>
 <label class="field content-wide publish-toggle"><input type="checkbox" name="intro_animation" checked><span>Activer une animation d'introduction légère au chargement du site</span></label>
-<button class="btn btn-primary" type="submit">+ Créer mon site</button><p data-message class="error" aria-live="polite"></p></form></section>
+<button class="btn btn-primary" type="submit">+ Créer mon site</button><p data-message class="error" aria-live="polite"></p></form>
+<aside class="site-live-preview" aria-label="Aperçu en direct de votre site">
+  <div class="site-live-preview-heading"><div><span class="eyebrow">APERÇU EN DIRECT</span><h3>Votre site</h3></div><span class="preview-live-dot">En direct</span></div>
+  <div class="preview-browser"><div class="preview-browser-bar"><i></i><i></i><i></i><span>votre-site.jdnexa</span></div>
+    <div class="preview-screen" data-live-preview>
+      <div class="preview-site-nav"><b data-preview-brand>Mon projet</b><span>Accueil　 Services　 Contact</span></div>
+      <div class="preview-site-hero"><small data-preview-category>VOTRE PROJET</small><h2 data-preview-title>Mon nouveau site</h2><p data-preview-description>Présentez votre activité et vos idées au monde entier.</p><span class="preview-site-button">Découvrir</span></div>
+      <div class="preview-site-cards"><div><b></b><i></i><i></i></div><div><b></b><i></i><i></i></div><div><b></b><i></i><i></i></div></div>
+      <div class="preview-site-footer" data-preview-footer>© Mon projet</div>
+    </div>
+  </div>
+  <p class="preview-caption">L'aperçu évolue automatiquement selon le nom, la catégorie et les couleurs que vous choisissez. Le rendu final pourra être enrichi dans le Studio.</p>
+</aside>
+</section>
 <section class="sites-section"><div class="section-heading compact"><div><h2>Mes sites et projets</h2><p class="muted">Gérez séparément les pages, articles, produits, fichiers et paramètres de chaque site.</p></div><span class="badge" data-site-usage>0 site</span></div><p data-dashboard-message class="error" aria-live="polite"></p><div data-sites class="site-grid"><div class="empty">Chargement de vos sites…</div></div></section>
 </main></div><script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-client.js"></script><script src="dashboard.js"></script></body></html>
