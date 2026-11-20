@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Gérez votre compte, vos préférences et les paramètres de vos sites JDNEXA.">
+<title>Paramètres — JDNEXA</title><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-layout">
+<aside class="sidebar">
+<a class="brand" href="dashboard.html"><span class="brand-mark">J</span> JDNEXA</a>
+<a class="side-link" href="dashboard.html">⌂ Tableau de bord</a>
+<a class="side-link" href="collections.html">▤ Collections</a>
+<a class="side-link" href="studio.html">✎ Studio visuel</a>
+<a class="side-link active" href="settings.html">⚙ Paramètres</a>
+<a class="side-link" href="pricing.html">◇ Abonnement</a>
+<button class="side-link" data-logout>↪ Déconnexion</button>
+</aside>
+<main class="app-main">
+<div class="app-top"><div><span class="eyebrow">ESPACE PERSONNEL</span><h1 class="page-title">Paramètres</h1><p class="muted">Gérez les informations de votre compte et la configuration de vos sites.</p></div><span class="badge">Configuration du compte</span></div>
+<div class="settings-grid">
+<section class="settings-card">
+<h2>Informations du compte</h2><p>Votre identité de connexion JDNEXA.</p>
+<div class="field"><label>Adresse e-mail actuelle</label><input data-account-email type="email" readonly></div>
+<div class="field"><label for="new-email">Nouvelle adresse e-mail</label><input id="new-email" type="email" autocomplete="email" placeholder="nouvelle-adresse@exemple.com"></div>
+<div class="settings-actions"><button class="btn btn-primary" data-update-email>Mettre à jour l'e-mail</button><span data-email-status aria-live="polite"></span></div>
+</section>
+<section class="settings-card">
+<h2>Sécurité du compte</h2><p>Choisissez un mot de passe robuste et personnel.</p>
+<div class="field"><label for="new-password">Nouveau mot de passe</label><input id="new-password" type="password" minlength="8" autocomplete="new-password" placeholder="8 caractères minimum"></div>
+<div class="field"><label for="confirm-password">Confirmer le mot de passe</label><input id="confirm-password" type="password" minlength="8" autocomplete="new-password" placeholder="Répétez le mot de passe"></div>
+<div class="settings-actions"><button class="btn btn-primary" data-update-password>Modifier le mot de passe</button><span data-password-status aria-live="polite"></span></div>
+</section>
+<section class="settings-card settings-full">
+<h2>Paramètres de votre site</h2><p>Sélectionnez un site pour modifier ses informations publiques. Ces paramètres sont enregistrés avec le site sélectionné.</p>
+<div class="field"><label for="site-select">Site à configurer</label><select id="site-select"><option value="">Chargement des sites…</option></select></div>
+<div class="settings-grid">
+<div class="field"><label for="site-title">Nom affiché</label><input id="site-title" maxlength="100" placeholder="Nom de votre activité"></div>
+<div class="field"><label for="site-contact">Téléphone / WhatsApp</label><input id="site-contact" maxlength="40" placeholder="+242 …"></div>
+<div class="field settings-full"><label for="site-description">Description</label><textarea id="site-description" maxlength="500" placeholder="Présentez votre activité en quelques phrases."></textarea></div>
+<div class="field settings-full"><label for="site-logo">Adresse web du logo (facultatif)</label><input id="site-logo" type="url" placeholder="https://…"></div>
+</div>
+<div class="settings-actions"><button class="btn btn-primary" data-save-site>Enregistrer les paramètres du site</button><span data-site-status aria-live="polite"></span></div>
+</section>
+<section class="settings-card">
+<h2>Préférences</h2><p>Ces préférences sont mémorisées sur cet appareil.</p>
+<div class="field"><label for="language">Langue de l'interface</label><select id="language"><option value="fr">Français</option></select></div>
+<div class="field"><label for="currency">Devise d'affichage</label><select id="currency"><option value="XAF">Franc CFA (FCFA)</option></select></div>
+<div class="settings-actions"><button class="btn btn-primary" data-save-preferences>Enregistrer les préférences</button><span data-pref-status aria-live="polite"></span></div>
+</section>
+<section class="settings-card">
+<h2>Formule et facturation</h2><p>Consultez les formules et les modalités de renouvellement de JDNEXA.</p>
+<div class="field"><label>Formules disponibles</label><div class="settings-value">Découverte · Pro · Business</div></div>
+<p>Le renouvellement manuel est prévu. Le renouvellement automatique sera proposé uniquement avec un prestataire compatible et après votre autorisation explicite.</p>
+<a class="btn btn-light" href="pricing.html">Voir les formules et tarifs</a>
+</section>
+<section class="settings-card settings-full">
+<h2>Assistance et informations légales</h2><p>Retrouvez les règles qui encadrent l'utilisation de JDNEXA.</p>
+<div class="settings-actions"><a class="btn btn-light" href="terms.html">Conditions générales</a><a class="btn btn-light" href="privacy.html">Confidentialité</a><a class="btn btn-light" href="index.html">Site officiel</a></div>
+</section>
+</div>
+</main>
+</div>
+<script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-client.js"></script><script src="settings.js"></script>
+</body></html>
