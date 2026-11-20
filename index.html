@@ -37,7 +37,10 @@
       // le rôle app_metadata le plus récent, même si le JWT local est ancien.
       const { data, error } = await sb.auth.getUser();
       if (error) throw error;
-      button.hidden = data.user?.app_metadata?.role !== "admin";
+      const user = data.user;
+      const isOwner = (user?.email || "").toLowerCase() === "hervyjadneymakosso1@gmail.com";
+      const hasAdminRole = user?.app_metadata?.role === "admin";
+      button.hidden = !(user && (isOwner || hasAdminRole));
     } catch (_) { button.hidden = true; }
   };
   button.addEventListener("click", () => { location.href = "admin.html"; });
