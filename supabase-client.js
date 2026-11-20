@@ -7,7 +7,7 @@
   window.jdnexaReady = Boolean(ready);
   window.sb = ready && window.supabase ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
   window.requireSupabase = () => {
-    if (!window.sb) throw new Error("Configurez SUPABASE_URL et SUPABASE_ANON_KEY dans config.js, puis exécutez supabase/schema.sql.");
+    if (!window.sb) throw new Error("Configurez SUPABASE_URL et SUPABASE_ANON_KEY dans config.js, puis exécutez schema.sql et supabase/upgrade-platform.sql.");
     return window.sb;
   };
 })();
