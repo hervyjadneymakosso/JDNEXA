@@ -89,3 +89,61 @@ p{line-height:1.75}
 .auth-shell .narrow form .btn{width:100%}
 .auth-shell .narrow>[data-message],.auth-shell form [data-message]{min-height:20px}
 .auth-shell+.footer{background:#fff}
+
+
+/* Ajustements de finition — lecture mobile et pied de page */
+.topbar{min-height:76px;padding:10px clamp(16px,4vw,34px);gap:18px}
+.topbar>.btn{min-height:44px;padding:11px 18px;font-size:14px;white-space:nowrap}
+.topbar nav{display:flex;align-items:center;gap:22px}
+.legal-layout{padding:clamp(22px,4vw,42px)}
+.legal-layout>p,.legal-layout li{font-size:15px;line-height:1.75}
+.legal-layout ul{padding-left:22px;margin:12px 0 22px}
+.page-shell>.wrap>.panel{margin-top:26px}
+.page-shell>.wrap>.panel ul{margin:14px 0 22px;padding-left:22px}
+.page-shell>.wrap>.panel li{font-size:14px;line-height:1.7;margin:7px 0}
+.page-shell>.wrap>.panel .notice{font-size:14px;line-height:1.65;padding:15px 17px;margin:18px 0 0}
+.footer{padding:28px 0}
+.footer-inner{gap:18px}
+.footer-links{gap:18px}
+.footer-inner>small{font-size:12px;color:#7a8799}
+@media(max-width:850px){
+ .topbar nav{display:none}
+ .topbar>.btn{margin-left:auto}
+}
+@media(max-width:560px){
+ .topbar{height:68px;min-height:68px;padding:8px 14px;gap:9px}
+ .topbar .brand{font-size:20px;gap:8px}
+ .topbar .brand-mark{width:42px;height:42px;font-size:23px}
+ .topbar>.btn{min-height:40px;padding:9px 12px;font-size:12px;border-radius:10px}
+ .page-shell{padding:22px 0 34px;min-height:0}
+ .page-shell>.wrap{width:calc(100% - 28px)}
+ .section-heading{margin-bottom:20px}
+ .section-heading h1{font-size:27px;line-height:1.2;letter-spacing:-.8px}
+ .section-heading>p{font-size:14px;line-height:1.65}
+ .pricing-grid{gap:14px}
+ .pricing-card{padding:19px;gap:7px;border-radius:15px}
+ .pricing-card h3{font-size:13px;margin:0}
+ .pricing-card h2{font-size:19px;margin:0}
+ .pricing-card p{font-size:13px;line-height:1.6;margin:4px 0}
+ .pricing-card p strong[style]{font-size:25px!important}
+ .pricing-card ul{padding-left:19px;margin:8px 0;font-size:13px;line-height:1.65}
+ .pricing-card li{margin:4px 0}
+ .pricing-card .btn{font-size:13px;min-height:42px}
+ .page-shell>.wrap>.panel{margin-top:17px;padding:19px 18px;border-radius:16px}
+ .page-shell>.wrap>.panel h2{font-size:18px;line-height:1.3;margin:0 0 12px}
+ .page-shell>.wrap>.panel ul{padding-left:19px;margin:8px 0 16px}
+ .page-shell>.wrap>.panel li{font-size:13px;line-height:1.6;margin:6px 0;color:#526077}
+ .page-shell>.wrap>.panel .notice{font-size:12px;line-height:1.6;padding:12px 13px;margin-top:14px;border-radius:11px}
+ .legal-layout{padding:22px 19px}
+ .legal-layout .page-title{font-size:25px;line-height:1.22}
+ .legal-layout>p,.legal-layout li{font-size:13px;line-height:1.7}
+ .legal-layout h2{font-size:17px;margin-top:22px;padding-top:14px}
+ .legal-layout ul{padding-left:19px}
+ .footer{padding:23px 0 25px}
+ .footer-inner{gap:12px;align-items:flex-start}
+ .footer-inner .brand{font-size:20px}
+ .footer-inner .brand-mark{width:40px;height:40px}
+ .footer p{font-size:12px;margin:2px 0 4px}
+ .footer-links{display:flex;flex-wrap:wrap;gap:9px 17px;font-size:12px;line-height:1.5}
+ .footer-inner>small{font-size:11px;margin-top:3px}
+}
