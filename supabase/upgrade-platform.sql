@@ -221,6 +221,7 @@ create policy "owners delete JDNEXA media" on storage.objects for delete to auth
   and public.owns_site(((storage.foldername(name))[1])::uuid)
   and public.jdnexa_is_active_owner());
 
-grant select on public.abonnements,public.demandes_paiement to authenticated;
-grant insert on public.demandes_paiement to authenticated;
+grant select,insert,update,delete on public.abonnements,public.demandes_paiement to authenticated;
+grant select on public.collections_donnees to anon;
+grant insert on public.messages_et_commandes to anon;
 commit;
