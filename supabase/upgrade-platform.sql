@@ -213,9 +213,7 @@ create policy "public read JDNEXA media" on storage.objects for select to anon,a
 using(bucket_id='jdnexa-media');
 drop policy if exists "owners upload JDNEXA media" on storage.objects;
 create policy "owners upload JDNEXA media" on storage.objects for insert to authenticated
-with check(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
- select id::text from public.sites where owner_id=auth.uid()
-));
+with check(bucket_id='jdnexa-media' and (storage.foldername(name))[1] ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12});
 drop policy if exists "owners update JDNEXA media" on storage.objects;
 create policy "owners update JDNEXA media" on storage.objects for update to authenticated
 using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
@@ -229,6 +227,54 @@ create policy "owners delete JDNEXA media" on storage.objects for delete to auth
 using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
  select id::text from public.sites where owner_id=auth.uid()
 ));
+
+grant select on public.abonnements,public.demandes_paiement to authenticated;
+grant insert on public.demandes_paiement to authenticated;
+commit;
+
+ and public.owns_site(((storage.foldername(name))[1])::uuid)
+ and public.jdnexa_is_active_owner());
+drop policy if exists "owners update JDNEXA media" on storage.objects;
+create policy "owners update JDNEXA media" on storage.objects for update to authenticated
+using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})
+with check(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
+ select id::text from public.sites where owner_id=auth.uid()
+));
+drop policy if exists "owners delete JDNEXA media" on storage.objects;
+create policy "owners delete JDNEXA media" on storage.objects for delete to authenticated
+using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
+ select id::text from public.sites where owner_id=auth.uid()
+));
+
+grant select on public.abonnements,public.demandes_paiement to authenticated;
+grant insert on public.demandes_paiement to authenticated;
+commit;
+
+ and public.owns_site(((storage.foldername(name))[1])::uuid)
+ and public.jdnexa_is_active_owner())
+with check(bucket_id='jdnexa-media' and (storage.foldername(name))[1] ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12});
+drop policy if exists "owners delete JDNEXA media" on storage.objects;
+create policy "owners delete JDNEXA media" on storage.objects for delete to authenticated
+using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] in (
+ select id::text from public.sites where owner_id=auth.uid()
+));
+
+grant select on public.abonnements,public.demandes_paiement to authenticated;
+grant insert on public.demandes_paiement to authenticated;
+commit;
+
+ and public.owns_site(((storage.foldername(name))[1])::uuid)
+ and public.jdnexa_is_active_owner());
+drop policy if exists "owners delete JDNEXA media" on storage.objects;
+create policy "owners delete JDNEXA media" on storage.objects for delete to authenticated
+using(bucket_id='jdnexa-media' and (storage.foldername(name))[1] ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12});
+
+grant select on public.abonnements,public.demandes_paiement to authenticated;
+grant insert on public.demandes_paiement to authenticated;
+commit;
+
+ and public.owns_site(((storage.foldername(name))[1])::uuid)
+ and public.jdnexa_is_active_owner());
 
 grant select on public.abonnements,public.demandes_paiement to authenticated;
 grant insert on public.demandes_paiement to authenticated;
