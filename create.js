@@ -42,6 +42,11 @@
    [...form.querySelectorAll('[name="extra_pages"]:checked')].forEach(input=>{const p=pageDefaults[input.value];if(p)pageRows.push({site_id:data.id,titre:p.titre,slug:p.slug,content_json:{blocks:p.blocks.map(b=>({...b,id:crypto.randomUUID()}))}});});
    const {error:pageError}=await sb.from("pages").insert(pageRows);if(pageError){await sb.from("sites").delete().eq("id",data.id);throw pageError;}
    message.textContent="Site créé. Ouverture du Studio…";message.className="success";location.href="studio.html?site="+encodeURIComponent(data.id);
-  }catch(err){message.textContent=err.message||"La création du site a échoué.";message.className="error";submit.disabled=false;}
+  }catch(err){
+    const detail=[err?.message,err?.details,err?.hint,err?.code].filter(Boolean).join(" — ");
+    console.error("JDNEXA site creation error:",err);
+    message.textContent=detail||"La création du site a échoué. Vérifiez votre connexion et la configuration Supabase.";
+    message.className="error";submit.disabled=false;
+   }
  });
 })();
