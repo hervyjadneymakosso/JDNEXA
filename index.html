@@ -33,13 +33,16 @@
   try { sb = window.requireSupabase(); } catch (_) { return; }
   const updateAdminShortcut = async () => {
     try {
-      const { data: { session } } = await sb.auth.getSession();
-      const isAdmin = session?.user?.app_metadata?.role === "admin";
-      button.hidden = !isAdmin;
+      // getUser() relit le profil auprès de Supabase afin de récupérer
+      // le rôle app_metadata le plus récent, même si le JWT local est ancien.
+      const { data, error } = await sb.auth.getUser();
+      if (error) throw error;
+      button.hidden = data.user?.app_metadata?.role !== "admin";
     } catch (_) { button.hidden = true; }
   };
   button.addEventListener("click", () => { location.href = "admin.html"; });
   updateAdminShortcut();
+  window.addEventListener("pageshow", updateAdminShortcut);
   sb.auth.onAuthStateChange(() => updateAdminShortcut());
 })();
 </script>
