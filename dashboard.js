@@ -1344,28 +1344,6 @@
   if(!sub.error&&sub.data){plan=sub.data.formule;siteLimit=plan==="BUSINESS"?5:1;$("[data-plan-name]").textContent=plan;$("[data-plan-limit]").textContent=sub.data.statut==="active"?"Jusqu'à "+siteLimit+" site"+(siteLimit>1?"s":""):"Abonnement à renouveler";}
   await load();
  }catch(e){say(msg,e.message||"Impossible de charger votre espace.");}
- ["nom","type_site","design_style","primary_color","background_color"].forEach(name=>form.elements[name]?.addEventListener("input",updateLivePreview));
- ["type_site","design_style"].forEach(name=>form.elements[name]?.addEventListener("change",updateLivePreview));
- updateLivePreview();
- document.querySelectorAll("[data-template]").forEach(card=>card.addEventListener("click",()=>{const key=card.dataset.template,preset=templatePresets[key];if(!preset)return;selectedTemplate=key;const categoryByTemplate={"fashion":"boutique","restaurant":"livraison","property":"immobilier","travel":"voyage","agency":"vitrine","magazine":"blog","portfolio":"portfolio","community":"reseau_social","dating":"rencontre","media":"streaming","gaming":"jeux","saas":"saas","education":"education","finance":"finance","health":"sante","events":"evenementiel","nonprofit":"association"};if(categoryByTemplate[key])form.elements.type_site.value=categoryByTemplate[key];document.querySelectorAll("[data-template]").forEach(x=>x.classList.toggle("active",x===card));form.elements.template_design.value=key;form.elements.design_style.value=preset.style;form.elements.primary_color.value=preset.primary;form.elements.background_color.value=preset.bg;draftBlocks=preset.blocks.map((b,i)=>({...b,id:"draft-"+key+"-"+i,items:b.items?[...b.items]:undefined,images:b.images?[...b.images]:undefined}));selectedDraft=null;renderDraft();}));
- document.querySelectorAll("[data-preview-add]").forEach(btn=>btn.addEventListener("click",()=>addDraftBlock(btn.dataset.previewAdd)));
- $("[data-preview-up]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>0){[draftBlocks[i-1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i-1]];renderDraft();}});
- $("[data-preview-down]").addEventListener("click",()=>{const i=draftBlocks.findIndex(x=>x.id===selectedDraft);if(i>=0&&i<draftBlocks.length-1){[draftBlocks[i+1],draftBlocks[i]]=[draftBlocks[i],draftBlocks[i+1]];renderDraft();}});
- $("[data-preview-delete]").addEventListener("click",()=>{draftBlocks=draftBlocks.filter(x=>x.id!==selectedDraft);selectedDraft=null;renderDraft();});
- form.addEventListener("submit",async e=>{
-  e.preventDefault();const btn=form.querySelector('[type="submit"]');btn.disabled=true;const status=form.querySelector("[data-message]");
-  try{
-   const nom=form.nom.value.trim(),slug=slugify(form.slug.value),type=form.type_site.value;
-   if(!nom||slug.length<2)throw Error("Indiquez un nom et un identifiant valide.");
-   const settings={site_type:type,display_name:nom,description:"Bienvenue sur "+nom,template:type,template_design:selectedTemplate,design_style:form.design_style.value,font_family:form.font_family.value,primary_color:form.primary_color.value,background_color:form.background_color.value,intro_animation:form.intro_animation.checked};
-   const {data,error}=await sb.from("sites").insert({owner_id:user.id,nom,slug,type_site:type,settings_json:settings}).select("id").single();
-   if(error)throw error;
-   const blocks=draftBlocks.map(b=>({...b,id:crypto.randomUUID(),items:b.items?[...b.items]:undefined,images:b.images?[...b.images]:undefined}));
-   const {error:pageError}=await sb.from("pages").insert({site_id:data.id,titre:"Accueil",slug:"accueil",content_json:{blocks}});
-   if(pageError)throw pageError;
-   form.reset();selectedTemplate="fashion";form.elements.template_design.value="fashion";document.querySelectorAll("[data-template]").forEach(x=>x.classList.toggle("active",x.dataset.template==="fashion"));draftBlocks=templatePresets.fashion.blocks.map((b,i)=>({...b,id:"draft-"+i}));selectedDraft=null;updateLivePreview();say(status,"Votre site a été créé avec les éléments de votre aperçu. Ouvrez le Studio pour continuer.",true);await load();
-  }catch(err){say(status,err.message||"La création du site a échoué.");}
-  finally{btn.disabled=false;}
- });
+ document.querySelectorAll("[data-template]").forEach(card=>card.addEventListener("click",()=>{const key=card.dataset.template;if(!templatePresets[key])return;location.href="create.html?template="+encodeURIComponent(key);}));
  $("[data-logout]").addEventListener("click",async()=>{await sb.auth.signOut();location.href="index.html";});
 })();
